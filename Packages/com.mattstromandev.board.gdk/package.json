@@ -1,0 +1,22 @@
+{
+  "name": "com.mattstroman.boardgdk",
+  "displayName": "Board GDK",
+  "description": "Utilities, extensions, and framework built on top of the Board SDK. Enables the ability to connect with Board via Unity's input actions and action maps, as well as provides a framework for defining pieces and piece behavior for your game in a data-driven approach.",
+  "version": "0.0.1",
+  "unity": "6.3",
+  "dependencies": {
+	"fun.board": "3.2.1"
+  },
+  "keywords": [
+    "board",
+	"board gdk",
+	"board sdk",
+    "utilities",
+	"extensions",
+	"QoL"
+  ],
+  "author": {
+    "name": "Matt Stroman",
+    "email": "matt@mattstroman.com"
+  }
+}

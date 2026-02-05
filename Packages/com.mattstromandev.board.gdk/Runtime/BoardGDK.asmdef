@@ -1,0 +1,19 @@
+{
+    "name": "BoardGDK",
+    "rootNamespace": "BoardGDK",
+    "references": [
+        "Board",
+        "MackySoft.SerializeReferenceExtensions",
+        "Zenject",
+        "AYellowpaper.SerializedCollections"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

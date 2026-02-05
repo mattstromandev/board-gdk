@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9a6388228b47938b2826bcb3f8fdb8, type: 3}
+  m_Name: ChopChop+Mushka_Default
+  m_EditorClassIdentifier: BoardGDK::BoardGDK.Pieces.PieceSetInputSettings
+  m_TranslationSmoothing: 0.5
+  m_RotationSmoothing: 0.5
+  m_Persistence: 4
+  m_GlyphModelFilename: chop_chop_mushka_v1.0.0
+  m_glyphIDMapping:
+    _serializedList:
+    - Key: 0
+      Value: Spoon
+    - Key: 1
+      Value: Sponge
+    - Key: 2
+      Value: Spice Mill
+    - Key: 3
+      Value: Knife
+    - Key: 4
+      Value: Little Chef
+    - Key: 5
+      Value: Chop Sticks
