@@ -35,14 +35,14 @@ MonoBehaviour:
     - Key: 7
       Value: Ship Orange
     - Key: 8
-      Value: Shield
+      Value: Athena (shield)
     - Key: 9
-      Value: Cornucopia
+      Value: Demeter (cornucopia)
     - Key: 10
-      Value: Trident
+      Value: Poseidon (trident)
     - Key: 11
-      Value: Lightning
+      Value: Zeus (lightning)
     - Key: 12
-      Value: Cerberus
+      Value: Hades (dog)
     - Key: 13
-      Value: Grapes
+      Value: Dionysus (grapes)
