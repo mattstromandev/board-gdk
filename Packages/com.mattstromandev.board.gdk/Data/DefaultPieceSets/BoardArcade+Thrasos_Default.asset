@@ -19,30 +19,30 @@ MonoBehaviour:
   m_glyphIDMapping:
     _serializedList:
     - Key: 0
-      Value: Robot Yellow
-    - Key: 1
-      Value: Robot Purple
-    - Key: 2
-      Value: Robot Orange
-    - Key: 3
-      Value: Robot Pink
-    - Key: 4
-      Value: Ship Pink
-    - Key: 5
-      Value: Ship Yellow
-    - Key: 6
-      Value: Ship Purple
-    - Key: 7
-      Value: Ship Orange
-    - Key: 8
-      Value: Athena (shield)
-    - Key: 9
-      Value: Demeter (cornucopia)
-    - Key: 10
-      Value: Poseidon (trident)
-    - Key: 11
-      Value: Zeus (lightning)
-    - Key: 12
       Value: Hades (dog)
-    - Key: 13
+    - Key: 1
       Value: Dionysus (grapes)
+    - Key: 2
+      Value: Demeter (cornucopia)
+    - Key: 3
+      Value: Athena (shield)
+    - Key: 4
+      Value: Poseidon (trident)
+    - Key: 5
+      Value: Zeus (lightning)
+    - Key: 6
+      Value: Robot Yellow
+    - Key: 7
+      Value: Robot Purple
+    - Key: 8
+      Value: Robot Orange
+    - Key: 9
+      Value: Robot Pink
+    - Key: 10
+      Value: Ship Pink
+    - Key: 11
+      Value: Ship Yellow
+    - Key: 12
+      Value: Ship Purple
+    - Key: 13
+      Value: Ship Orange

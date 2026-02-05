@@ -15,14 +15,14 @@ MonoBehaviour:
   m_TranslationSmoothing: 0.5
   m_RotationSmoothing: 0.5
   m_Persistence: 4
-  m_GlyphModelFilename: chop_chop_mushka_v1.0.0
+  m_GlyphModelFilename: chop_chop_mushka_v1.0.0.tflite
   m_glyphIDMapping:
     _serializedList:
     - Key: 0
       Value: Spoon
     - Key: 1
       Value: Sponge
-    - Key: 2
+    - Key: 7
       Value: Spice Mill
     - Key: 3
       Value: Knife
