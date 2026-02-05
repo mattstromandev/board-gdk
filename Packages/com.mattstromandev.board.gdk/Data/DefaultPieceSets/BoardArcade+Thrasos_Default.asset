@@ -15,7 +15,7 @@ MonoBehaviour:
   m_TranslationSmoothing: 0.5
   m_RotationSmoothing: 0.5
   m_Persistence: 4
-  m_GlyphModelFilename: arcade_v1.3.7.tflite
+  m_GlyphModelFilename: thrasos_arcade_v1.0.2.tflite
   m_glyphIDMapping:
     _serializedList:
     - Key: 0
@@ -34,3 +34,15 @@ MonoBehaviour:
       Value: Ship Purple
     - Key: 7
       Value: Ship Orange
+    - Key: 8
+      Value: Shield
+    - Key: 9
+      Value: Cornucopia
+    - Key: 10
+      Value: Trident
+    - Key: 11
+      Value: Lightning
+    - Key: 12
+      Value: Cerberus
+    - Key: 13
+      Value: Grapes
