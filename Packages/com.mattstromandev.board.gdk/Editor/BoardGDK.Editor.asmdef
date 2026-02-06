@@ -1,9 +1,10 @@
 {
     "name": "BoardGDK.Editor",
-    "rootNamespace": "BoardGDK",
+    "rootNamespace": "BoardGDK.Editor",
     "references": [
         "Board",
-        "Board.Editor"
+        "Board.Editor",
+        "BoardGDK"
     ],
     "includePlatforms": [
         "Editor"

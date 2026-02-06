@@ -1,5 +1,6 @@
 ﻿using System;
 
+using BoardGDK.Pieces.Attributes;
 using BoardGDK.Pieces.Behaviors.Conditions;
 
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PieceBehaviorDefinition : ScriptableObject, IPieceBehaviorDefinitio
     /// <inheritdoc />
     [field: Tooltip("Board Pieces with these glyph IDs will match this definition.")]
     [field: SerializeField]
+    [field: PieceName]
     public int[] GlyphIDs { get; private set; } = Array.Empty<int>();
 
     /// <inheritdoc />
