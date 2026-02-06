@@ -116,7 +116,7 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
         if(availablePieceSetDefinitions.Length == 0)
         {
-            Debug.LogError($"{nameof(PieceSystem)}: No piece set definitions were injected.");
+            UnityEngine.Debug.LogError($"{nameof(PieceSystem)}: No piece set definitions were injected.");
         }
         
         _availablePieceSetDefinitions = availablePieceSetDefinitions;
@@ -165,7 +165,7 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
             if(boardContact.phase == BoardContactPhase.Began)
             {
-                Debug.Log(
+                UnityEngine.Debug.Log(
                     $"{nameof(PieceSystem)}: Creating virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
                 );
 
@@ -176,7 +176,7 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
             }
             else
             {
-                Debug.LogWarning(
+                UnityEngine.Debug.LogWarning(
                     $"{nameof(PieceSystem)}: Unexpected phase for unknown board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
                 );
                 
@@ -186,14 +186,14 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
                 if(piece == null)
                 {
-                    Debug.LogError(
+                    UnityEngine.Debug.LogError(
                         $"{nameof(PieceSystem)}: a virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}> does not exist, but the phase is in a state when it should; Phase: <{boardContact.phase}>"
                     );
 
                     return;
                 }
                 
-                Debug.Log(
+                UnityEngine.Debug.Log(
                     $"{nameof(PieceSystem)}: relocated existing virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
                 );
             }
@@ -205,7 +205,7 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
         if(boardContact.isNoneEndedOrCanceled)
         {
-            Debug.Log(
+            UnityEngine.Debug.Log(
                 $"{nameof(PieceSystem)}: Destroying virtual piece for board contact <{boardContact.contactId}> for glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
             );
             _activePiecesByBoardContactID.Remove(boardContact.contactId);
@@ -222,7 +222,7 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
         if(matchingPieceSet == null)
         {
-            Debug.LogError($"{nameof(PieceSystem)}: No matching {nameof(IPieceSetDefinition)} found for the current {nameof(BoardInput)} settings: {JsonUtility.ToJson(BoardInput.settings)}.");
+            UnityEngine.Debug.LogError($"{nameof(PieceSystem)}: No matching {nameof(IPieceSetDefinition)} found for the current {nameof(BoardInput)} settings: {JsonUtility.ToJson(BoardInput.settings)}.");
             
             return;
         }

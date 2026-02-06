@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
+using Board.Input;
 
 using BoardGDK.Pieces.Behaviors;
 using BoardGDK.Pieces.Behaviors.Conditions;
@@ -28,9 +31,14 @@ public class PieceSystemInstaller : ScriptableObjectInstaller<PieceSystemInstall
     [Tooltip("The global settings to apply to all piece behaviors.")]
     private PieceBehaviorSettings m_globalPieceBehaviorSettings;
 
+    [SerializeField]
+    [Tooltip("All piece set input settings found in the project.")]
+    private BoardInputSettings[] m_allBoardInputSettings;
+
     /// <inheritdoc />
     public override void InstallBindings()
     {
+        Container.BindInstance(m_allBoardInputSettings).AsSingle();
         Container.Bind<IPieceBehaviorSystem>().To<PieceBehaviorSystem>().FromNewComponentOnNewGameObject().AsSingle().WithArguments(
             m_globalPieceBehaviorSettings, m_pieceBehaviorPrioritySettings
         );
@@ -83,7 +91,19 @@ public class PieceSystemInstaller : ScriptableObjectInstaller<PieceSystemInstall
 
         return pieceBehaviorsFromSets.Concat(additionalPieceBehaviors);
     }
-    
-    
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        string[] boardInputSettingsGuids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(BoardInputSettings)}");
+        string[] boardInputSettingsPaths = boardInputSettingsGuids.Select(UnityEditor.AssetDatabase.GUIDToAssetPath).ToArray();
+        m_allBoardInputSettings = boardInputSettingsPaths
+            .Select(UnityEditor.AssetDatabase.LoadAssetAtPath<BoardInputSettings>)
+            .Where(x => x != null)
+            .ToArray();
+    }
+
+#endif
 }
 }

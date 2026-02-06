@@ -14,7 +14,7 @@ public class SyncRotation : PieceBehavior
 {
     [Tooltip("The axis treated as world up when applying rotation (world space).")]
     [SerializeField]
-    private Vector3 m_worldUpAxis = Vector3.forward;
+    private Vector3 m_worldUpAxis = Vector3.up;
     
     [Tooltip("An offset (in degrees), if any, to apply to the rotation.")]
     [SerializeField]
@@ -39,14 +39,12 @@ public class SyncRotation : PieceBehavior
 
     private void SetRotation(PieceBehaviorContext context)
     {
-        if(context.VirtualPiece.DigitalPiece == null) { return; }
-
         float baseRotationDegrees = context.ActiveContact.orientation * Mathf.Rad2Deg + m_offsetDegrees;
 
         if(m_snapStep > 0) { baseRotationDegrees = Mathf.RoundToInt(baseRotationDegrees / m_snapStep) * m_snapStep; }
 
         Vector3 rotationAxis = ResolveWorldUpAxis();
-        context.VirtualPiece.DigitalPiece.transform.rotation = Quaternion.AngleAxis(baseRotationDegrees, rotationAxis);
+        context.VirtualPiece.AnchorTransform.rotation = Quaternion.AngleAxis(baseRotationDegrees, rotationAxis);
     }
 
     private Vector3 ResolveWorldUpAxis()

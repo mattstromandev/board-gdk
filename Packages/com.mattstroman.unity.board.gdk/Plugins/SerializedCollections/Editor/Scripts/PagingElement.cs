@@ -21,7 +21,7 @@ namespace AYellowpaper.SerializedCollections.Editor
             get => _pageCount;
             set
             {
-                Debug.Assert(value >= 1, $"{nameof(PageCount)} needs to be 1 or larger but is {value}.");
+                UnityEngine.Debug.Assert(value >= 1, $"{nameof(PageCount)} needs to be 1 or larger but is {value}.");
                 _pageCount = value;
                 EnsureValidPageIndex();
             }

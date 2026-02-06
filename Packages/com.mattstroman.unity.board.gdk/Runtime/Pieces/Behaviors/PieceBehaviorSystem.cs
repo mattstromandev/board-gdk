@@ -36,6 +36,7 @@ public class PieceBehaviorSystem : MonoBehaviour, IPieceBehaviorSystem
         
         foreach(IPieceBehaviorDefinition matchingPieceDefinition in matchingBehaviorDefinitions)
         {
+            behaviorContext.BehaviorDefinition = matchingPieceDefinition;
             behaviorContext.MeetsGlobalConditions = EvaluateGlobalConditions(matchingPieceDefinition, behaviorContext);
 
             IEnumerable<IPieceBehavior> pieceBehaviorsFromSets

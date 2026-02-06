@@ -19,13 +19,13 @@ public class DigitalPiece : PieceBehavior
     private GameObject m_prefab;
 
     private IInstantiator _instantiator;
+    private GameObject _digitalPieceInstance;
 
     /// <inheritdoc />
     protected override void OnActivate(PieceBehaviorContext context)
     {
-        if(context.VirtualPiece.DigitalPiece != null) { return; }
-
-        context.VirtualPiece.AssignDigitalPiece(_instantiator.InstantiatePrefab(m_prefab));
+        _digitalPieceInstance = _instantiator.InstantiatePrefab(m_prefab, context.VirtualPiece.AnchorTransform);
+        context.VirtualPiece.AddDigitalPiece(_digitalPieceInstance);
     }
 
     protected override void OnUpdate(PieceBehaviorContext context) { }
@@ -33,9 +33,10 @@ public class DigitalPiece : PieceBehavior
     /// <inheritdoc />
     protected override void OnDeactivate(PieceBehaviorContext context)
     {
-        if(context.VirtualPiece.DigitalPiece == null) { return; }
-
-        Object.Destroy(context.VirtualPiece.DigitalPiece);
+        if(_digitalPieceInstance == null) { return; }
+        
+        context.VirtualPiece.RemoveDigitalPiece(_digitalPieceInstance);
+        Object.Destroy(_digitalPieceInstance);
     }
 
     [Inject]

@@ -16,7 +16,25 @@ public abstract class PieceBehaviorCondition : IPieceBehaviorCondition
     public bool Negate { get; private set; }
 
     /// <inheritdoc />
-    public bool Evaluate(PieceBehaviorContext context)
+    /// <remarks>
+    /// Override only if you need to add additional validation checks <b>before</b> invoking the actual evaluation in
+    /// <see cref="DoEvaluation"/>. For example, you may have additional inputs that are required for evaluation.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// public override bool Evaluate(PieceBehaviorContext context)
+    /// {
+    ///     if(MyCustomSetting == null)
+    ///     {
+    ///         UnityEngine.Debug.LogWarning($"{GetType().Name}: {nameof(MyCustomSetting)} is null; unable to evaluate condition. Context: {JsonUtility.ToJson(context)}"); 
+    ///         return false;
+    ///     }
+    /// 
+    ///     return base.Evaluate(context);
+    /// }
+    /// </code>
+    /// </example>
+    public virtual bool Evaluate(PieceBehaviorContext context)
     {
         bool result = DoEvaluation(context);
         

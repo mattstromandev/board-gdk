@@ -7,12 +7,44 @@
       "dependencies": {},
       "hash": "5fadcb6564f0c6e988641e2e4a4aba4b6b1caafe"
     },
-    "com.mattstroman.boardgdk": {
-      "version": "file:com.mattstromandev.board.gdk",
+    "com.mattstroman.unity.board.gdk": {
+      "version": "file:com.mattstroman.unity.board.gdk",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "fun.board": "3.2.1"
+        "com.mackysoft.serializereference-extensions": "1.7.0",
+        "com.svermeulen.extenject": "9.2.0",
+        "fun.board": "3.2.1",
+        "com.mattstroman.unity.rahmen": "1.0.0",
+        "com.mattstroman.unity.rahmen.data": "1.0.0",
+        "com.mattstroman.unity.rahmen.events": "1.0.0"
+      }
+    },
+    "com.mattstroman.unity.rahmen": {
+      "version": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.mackysoft.serializereference-extensions": "1.6.1",
+        "jp.hadashikick.vcontainer": "1.17.0",
+        "com.unity.editorcoroutines": "1.0.0"
+      }
+    },
+    "com.mattstroman.unity.rahmen.data": {
+      "version": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen.data",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.mattstroman.unity.rahmen": "1.0.0",
+        "com.mattstroman.unity.rahmen.events": "1.0.0"
+      }
+    },
+    "com.mattstroman.unity.rahmen.events": {
+      "version": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen.events",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.mattstroman.unity.rahmen": "1.0.0"
       }
     },
     "com.svermeulen.extenject": {
@@ -155,6 +187,13 @@
       "dependencies": {
         "com.unity.inputsystem": "1.7.0"
       }
+    },
+    "jp.hadashikick.vcontainer": {
+      "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "177dbda557fd652ce7f5d1647a3621653e094373"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

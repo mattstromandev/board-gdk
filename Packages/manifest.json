@@ -2,7 +2,11 @@
   "dependencies": {
     "com.mackysoft.serializereference-extensions": "https://github.com/mackysoft/Unity-SerializeReferenceExtensions.git?path=Assets/MackySoft/MackySoft.SerializeReferenceExtensions",
     "com.svermeulen.extenject": "https://github.com/Mathijs-Bakker/Extenject.git?path=UnityProject/Assets/Plugins/Zenject/Source#9.3.1",
+    "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0",
     "fun.board": "file:C:/Source/Unity/Board/SDK/fun.board-3.2.1.tgz",
+    "com.mattstroman.unity.rahmen": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen",
+    "com.mattstroman.unity.rahmen.data": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen.data",
+    "com.mattstroman.unity.rahmen.events": "file:C:/Source/Unity/mattstromandev/Rahmen/Packages/com.mattstroman.unity.rahmen.events",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.18.0",
     "com.unity.multiplayer.center": "1.0.1",

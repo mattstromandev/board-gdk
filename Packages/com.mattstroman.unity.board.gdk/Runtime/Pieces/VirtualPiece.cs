@@ -1,4 +1,4 @@
-﻿using Board.Input;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -21,16 +21,26 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     // TODO: Make this readonly in the inspector
     public int GlyphID { get; internal set; }
 
-    /// <inheritdoc/>
-    [field: SerializeField]
-    [field: Tooltip("The GameObject currently representing this piece in the digital world, if there is a digital representation.")]
+    [SerializeField]
+    [Tooltip("The GameObjects currently representing this piece in the digital world, if there are any digital representation.")]
     // TODO: Make this readonly in the inspector
-    public GameObject DigitalPiece { get; internal set; }
+    private List<GameObject> m_digitalPieces = new();
 
     /// <inheritdoc/>
-    void IVirtualPiece.AssignDigitalPiece(GameObject digitalPiece)
+    public Transform AnchorTransform => transform;
+
+    /// <inheritdoc/>
+    public IReadOnlyCollection<GameObject> DigitalPieces => m_digitalPieces;
+
+    /// <inheritdoc/>
+    void IVirtualPiece.AddDigitalPiece(GameObject digitalPiece)
     {
-        DigitalPiece = digitalPiece;
+        m_digitalPieces.Add(digitalPiece);
+    }
+
+    public void RemoveDigitalPiece(GameObject digitalPiece)
+    {
+        m_digitalPieces.Remove(digitalPiece);
     }
 }
 }

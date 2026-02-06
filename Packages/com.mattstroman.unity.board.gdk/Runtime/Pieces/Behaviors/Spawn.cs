@@ -4,8 +4,6 @@ using UnityEngine;
 
 using Zenject;
 
-using Object = UnityEngine.Object;
-
 namespace BoardGDK.Pieces.Behaviors
 {
 /// <summary>
@@ -73,9 +71,9 @@ public class Spawn : PieceBehavior
         Camera mainCamera = Camera.main;
         Vector3 screenPosition = context.ActiveContact.screenPosition;
 
-        if(context.VirtualPiece.DigitalPiece != null)
+        if(context.VirtualPiece.DigitalPieces != null)
         {
-            screenPosition.z = mainCamera.WorldToScreenPoint(context.VirtualPiece.DigitalPiece.transform.position).z;
+            screenPosition.z = mainCamera.WorldToScreenPoint(context.VirtualPiece.AnchorTransform.position).z;
         }
         else { screenPosition.z = mainCamera.nearClipPlane; }
 

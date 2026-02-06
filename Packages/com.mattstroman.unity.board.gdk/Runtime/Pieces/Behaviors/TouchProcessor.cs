@@ -49,7 +49,7 @@ public class TouchProcessor : PieceBehavior
 
             if(touchDistanceFromPieceCenter > m_touchAcceptanceRange)
             {
-                Debug.Log(
+                UnityEngine.Debug.Log(
                     $"{nameof(TouchProcessor)}: ignoring touch at <{activeTouch.screenPosition}> as it is not within range <{m_touchAcceptanceRange}>. Distance was <{touchDistanceFromPieceCenter}>"
                 );
 
@@ -59,9 +59,9 @@ public class TouchProcessor : PieceBehavior
             Camera cameraToRayFrom = _mainCamera;
 
             // TODO: look at what this commented code was trying to achieve
-            // if(piece.DigitalPiece != null)
+            // if(piece.DigitalPieces != null)
             // {
-            //     Camera embeddedCamera = piece.DigitalPiece.GetComponentInChildren<Camera>();
+            //     Camera embeddedCamera = piece.DigitalPieces.GetComponentInChildren<Camera>();
             //
             //     if(embeddedCamera != null)
             //     {
@@ -69,7 +69,7 @@ public class TouchProcessor : PieceBehavior
             //     }
             // }
             //
-            // Debug.Log($"{nameof(TouchProcessor)}: processing touch at <{activeTouch.screenPosition}> with camera <{cameraToRayFrom.name}>.");
+            // UnityEngine.Debug.Log($"{nameof(TouchProcessor)}: processing touch at <{activeTouch.screenPosition}> with camera <{cameraToRayFrom.name}>.");
 
             Ray touchRay = cameraToRayFrom.ScreenPointToRay(activeTouch.screenPosition);
 
@@ -80,7 +80,7 @@ public class TouchProcessor : PieceBehavior
 
                 foreach(ITouchable touchable in touchables)
                 {
-                    Debug.Log($"{nameof(TouchProcessor)}: applying touch to <{hitInfo.collider.name}>");
+                    UnityEngine.Debug.Log($"{nameof(TouchProcessor)}: applying touch to <{hitInfo.collider.name}>");
                     touchable.OnTouch();
                 }
             }
