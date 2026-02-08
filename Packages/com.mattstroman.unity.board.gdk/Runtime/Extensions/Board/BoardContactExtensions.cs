@@ -122,6 +122,27 @@ public static class BoardContactExtensions
     }
 
     /// <summary>
+    /// Retrieve the world position of this <see cref="BoardContact"/>, using the specified camera and providing a world up axis.
+    /// </summary>
+    /// <param name="camera">The <see cref="Camera"/> to use for reference.</param>
+    /// <param name="worldUpAxis">The vector that represents the world up axis.</param>
+    /// <param name="screenSpaceOffset">An offset, in screen space, to apply before calculating the world position.</param>
+    /// <param name="referenceWorldPosition">A position to use as a reference for the movement plan.</param>
+    /// <returns>The world position of this contact from the perspective of the given camera and <paramref name="referenceWorldPosition"/>.</returns>
+    public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis, Vector2 screenSpaceOffset, Vector3 referenceWorldPosition)
+    {
+        Vector3 screenPosition = me.screenPosition + screenSpaceOffset;
+        Ray screenRay = camera.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
+        
+        Vector3 resolvedWorldUpAxis = worldUpAxis.ResolveWorldUp();
+        Plane movementPlane = new(resolvedWorldUpAxis, referenceWorldPosition);
+
+        if(movementPlane.Raycast(screenRay, out float enter) == false) { return Vector3.zero; }
+
+        return screenRay.GetPoint(enter);
+    }
+
+    /// <summary>
     /// Retrieve the world position of this <see cref="BoardContact"/>, using the specified camera as reference, and
     /// a physics check for surface detection.
     /// </summary>
