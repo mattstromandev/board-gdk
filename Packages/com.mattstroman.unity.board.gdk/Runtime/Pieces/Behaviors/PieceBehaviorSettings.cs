@@ -8,12 +8,5 @@ namespace BoardGDK.Pieces.Behaviors
 [CreateAssetMenu(menuName = Menus.PiecesMenuRoot + "Piece Behavior Settings")]
 public class PieceBehaviorSettings : ScriptableObject, IPieceBehaviorSettings
 {
-    /// <inheritdoc />
-    [field: SerializeField]
-    public bool UsePieceSettling { get; private set; } = true;
-
-    /// <inheritdoc />
-    [field: SerializeField]
-    public int PieceSettlingFrames { get; private set; } = 3;
 }
 }

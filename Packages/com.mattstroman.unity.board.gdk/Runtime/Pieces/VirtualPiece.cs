@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using BoardGDK.Pieces.Attributes;
+
 using UnityEngine;
 
 namespace BoardGDK.Pieces
@@ -17,6 +19,7 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
 
     /// <inheritdoc/>
     [field: SerializeField]
+    [field: PieceName]
     [field: Tooltip("The glyph ID of the associated physical Piece.")]
     // TODO: Make this readonly in the inspector
     public int GlyphID { get; internal set; }

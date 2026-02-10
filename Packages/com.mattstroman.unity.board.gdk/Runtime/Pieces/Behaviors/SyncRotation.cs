@@ -16,7 +16,7 @@ public class SyncRotation : PieceBehavior
     [SerializeField]
     private Vector3 m_worldUpAxis = Vector3.up;
     
-    [Tooltip("An offset (in degrees), if any, to apply to the rotation.")]
+    [Tooltip("An offset (in degrees and screen space) to apply to the rotation.")]
     [SerializeField]
     private float m_offsetDegrees;
     
@@ -25,21 +25,29 @@ public class SyncRotation : PieceBehavior
     private int m_snapStep;
 
     /// <inheritdoc />
-    protected override void OnActivate(PieceBehaviorContext context) { SetRotation(context); }
+    public override void Place(PieceBehaviorContext context) { }
 
     /// <inheritdoc />
-    protected override void OnUpdate(PieceBehaviorContext context)
+    public override void Activate(PieceBehaviorContext context) { SetRotation(context); }
+
+    /// <inheritdoc />
+    public override void Update(PieceBehaviorContext context)
     {
-        if(context.ActiveContact.phase != BoardContactPhase.Moved) { return; }
+        // TODO: Handle the ability to specify if this should be updated in more than just move.
+        // if(context.ContactState.phase != BoardContactPhase.Moved) { return; }
 
         SetRotation(context);
     }
 
-    protected override void OnDeactivate(PieceBehaviorContext context) { }
+    /// <inheritdoc />
+    public override void Deactivate(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void PickUp(PieceBehaviorContext context) { }
 
     private void SetRotation(PieceBehaviorContext context)
     {
-        float baseRotationDegrees = context.ActiveContact.orientation * Mathf.Rad2Deg + m_offsetDegrees;
+        float baseRotationDegrees = context.ContactState.orientation * Mathf.Rad2Deg + m_offsetDegrees;
 
         if(m_snapStep > 0) { baseRotationDegrees = Mathf.RoundToInt(baseRotationDegrees / m_snapStep) * m_snapStep; }
 

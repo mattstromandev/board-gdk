@@ -12,6 +12,11 @@ namespace BoardGDK.Pieces
 public interface IVirtualPiece
 {
     /// <summary>
+    /// The name of the <see cref="IVirtualPiece"/>.
+    /// </summary>
+    public string Name => AnchorTransform.name;
+    
+    /// <summary>
     /// The ID of the active <see cref="BoardContact"/> this piece is linked to.
     /// </summary>
     public int BoardContactID { get; }

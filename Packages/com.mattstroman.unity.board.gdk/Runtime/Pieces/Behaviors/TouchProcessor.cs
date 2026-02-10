@@ -14,6 +14,7 @@ namespace BoardGDK.Pieces.Behaviors
 /// <summary>
 /// 
 /// </summary>
+// TODO: Need to review this behavior and see if it is still an appropriate way to handle touches for pieces.
 [Serializable]
 public class TouchProcessor : PieceBehavior
 {
@@ -26,10 +27,14 @@ public class TouchProcessor : PieceBehavior
     private Camera _mainCamera;
     private LineRenderer _lineRenderer;
 
-    protected override void OnActivate(PieceBehaviorContext context) { }
+    /// <inheritdoc />
+    public override void Place(PieceBehaviorContext context) { }
 
     /// <inheritdoc />
-    protected override void OnUpdate(PieceBehaviorContext context)
+    public override void Activate(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void Update(PieceBehaviorContext context)
     {
         foreach(BoardContact activeTouch in BoardInput.GetActiveContacts(BoardContactType.Finger))
         {
@@ -45,7 +50,7 @@ public class TouchProcessor : PieceBehavior
             _lineRenderer.SetPosition(1, worldStartPos + _mainCamera.transform.forward * 10000);
 
             float touchDistanceFromPieceCenter
-                = Vector2.Distance(context.ActiveContact.screenPosition, activeTouch.screenPosition);
+                = Vector2.Distance(context.ContactState.screenPosition, activeTouch.screenPosition);
 
             if(touchDistanceFromPieceCenter > m_touchAcceptanceRange)
             {
@@ -87,7 +92,11 @@ public class TouchProcessor : PieceBehavior
         }
     }
 
-    protected override void OnDeactivate(PieceBehaviorContext context) {}
+    /// <inheritdoc />
+    public override void Deactivate(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void PickUp(PieceBehaviorContext context) { }
 
     [Inject]
     private void Injection()

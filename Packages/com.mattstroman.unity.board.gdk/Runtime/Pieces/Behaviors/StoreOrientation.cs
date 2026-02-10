@@ -23,15 +23,18 @@ public class StoreOrientation : PieceBehavior
     private float _lastOrientationDegrees;
 
     /// <inheritdoc />
-    protected override void OnActivate(PieceBehaviorContext context)
+    public override void Place(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void Activate(PieceBehaviorContext context)
     {
-        _lastOrientationDegrees = context.ActiveContact.orientation;
+        _lastOrientationDegrees = context.ContactState.orientation;
     }
 
     /// <inheritdoc />
-    protected override void OnUpdate(PieceBehaviorContext context)
+    public override void Update(PieceBehaviorContext context)
     {
-        float orientationDegrees = context.ActiveContact.orientation * Mathf.Rad2Deg;
+        float orientationDegrees = context.ContactState.orientation * Mathf.Rad2Deg;
 
         if(m_pieceOrientation != null) { m_pieceOrientation.Value = orientationDegrees; }
 
@@ -47,6 +50,10 @@ public class StoreOrientation : PieceBehavior
         }
     }
 
-    protected override void OnDeactivate(PieceBehaviorContext context) { }
+    /// <inheritdoc />
+    public override void Deactivate(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void PickUp(PieceBehaviorContext context) { }
 }
 }

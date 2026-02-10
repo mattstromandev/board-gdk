@@ -23,7 +23,7 @@ public class PieceInRange : DependentPieceCondition
     /// <inheritdoc />
     protected override bool DoEvaluation(PieceBehaviorContext context)
     {
-        Vector3 activeContactWorldPosition = context.ActiveContact.GetWorldPosition();
+        Vector3 activeContactWorldPosition = context.ContactState.GetWorldPosition();
         
         return _pieceSystem?.IsPieceInRange(DependentPieceBehavior, activeContactWorldPosition, m_rangeRadius) ?? false;
     }

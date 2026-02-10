@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Board.Input;
 
 using BoardGDK.Data;
 using BoardGDK.Pieces.Behaviors.Conditions;
+
+using JetBrains.Annotations;
+
+using Rahmen.Logging;
 
 using UnityEngine;
 
@@ -42,22 +43,16 @@ public abstract class PieceBehavior : IPieceBehavior
     [SerializeField]
     [Tooltip("The behavior settings to override the global settings with, if any.")]
     private PieceBehaviorSettings m_overrideSettings;
+
+    [Tooltip("The piece settling strategies that will be used for this behavior. Note that these are in addition to any piece settling strategies used at the piece system level, and will not override them. If any of the specified strategies indicate that the piece has not yet settled, the behavior will not be activated.")]
+    [SerializeReference, SubclassSelector]
+    private IPieceSettlingStrategy[] m_pieceSettlingStrategies = Array.Empty<IPieceSettlingStrategy>();
     
     /// <inheritdoc />
     public bool GlobalSettingsOverridden => OverrideSettings != null;
 
     /// <inheritdoc />
     public IPieceBehaviorSettings OverrideSettings => m_overrideSettings;
-
-    /// <summary>
-    /// Flag indicating whether piece settling is currently enabled for this behavior.
-    /// </summary>
-    protected bool UsingPieceSettling => GlobalSettingsOverridden ? OverrideSettings.UsePieceSettling : _pieceBehaviorSystem.GlobalSettings.UsePieceSettling;
-
-    /// <summary>
-    /// The number of frames to wait for piece settling, if enabled.
-    /// </summary>
-    protected int PieceSettlingFrames => GlobalSettingsOverridden ? OverrideSettings.PieceSettlingFrames : _pieceBehaviorSystem.GlobalSettings.PieceSettlingFrames;
 
     /// <summary>
     /// The <see cref="IDataProvider"/> which stores the settings for this behavior.
@@ -67,132 +62,22 @@ public abstract class PieceBehavior : IPieceBehavior
     /// </remarks>
     protected IDataProvider DataProvider { get; private set; }
 
-    private List<int> _activeBehaviorContactIDs = new();
-    private readonly Dictionary<int, int> _pendingSettleFramesByContactId = new();
-    private IPieceBehaviorSystem _pieceBehaviorSystem;
+    private PieceSettlingResolver _pieceSettlingResolver;
+    private IRahmenLogger _logger;
+
+    public PieceBehavior()
+    {
+        _pieceSettlingResolver = new PieceSettlingResolver(m_pieceSettlingStrategies);
+    }
 
     /// <inheritdoc />
-    public virtual void ProcessContact(PieceBehaviorContext context)
+    public bool HasSettled(IPieceSettlingContext context)
     {
-        if(context.MeetsGlobalConditions == false && OverrideGlobalConditions == false)
-        {
-            // Global conditions no longer met; deactivate if active
-            Deactivate(context);
-
-            return;
-        }
-
-        bool meetsConditions = EvaluateConditions(context);
-
-        if(meetsConditions == false)
-        {
-            // Local conditions no longer met; deactivate if active
-            Deactivate(context);
-
-            return;
-        }
-
-        if(context.ActiveContact.phase == BoardContactPhase.Began && IsBehaviorPendingSettle(context.ActiveContact) == false)
-        {
-            // New contact; start settling process
-            HandleSettle(context);
-
-            return;
-        }
-
-        if(context.ActiveContact.isInProgress)
-        {
-            // Contact is ongoing
-            Update(context);
-        }
-        else if(context.ActiveContact.isNoneEndedOrCanceled)
-        {
-            // Contact ended (removed from Board); deactivate behavior and inform of removal
-            Deactivate(context);
-            OnRemoved(context);
-        }
+        return _pieceSettlingResolver.HaveSettled(context);
     }
 
-    /// <summary>
-    /// Add any necessary logic specific to your behavior for when the Piece placement has settled.
-    /// </summary>
-    /// <param name="context">The necessary context for processing the contact and making decisions about behavior.</param>
-    protected virtual void OnPlaced(PieceBehaviorContext context) { }
-
-    /// <summary>
-    /// Add any necessary activation logic specific to your behavior.
-    /// </summary>
-    /// <remarks>
-    /// A Piece can be activated and deactivated multiple times while its <see cref="BoardContact"/> is active, depending
-    /// on the <see cref="Conditions"/>.
-    /// </remarks>
-    /// <param name="context">The necessary context for processing the contact and making decisions about behavior.</param>
-    protected virtual void OnActivate(PieceBehaviorContext context) { }
-
-    /// <summary>
-    /// Add any necessary update logic specific to your behavior.
-    /// </summary>
-    /// <param name="context">The necessary context for processing the contact and making decisions about behavior.</param>
-    protected virtual void OnUpdate(PieceBehaviorContext context) { }
-
-    /// <summary>
-    /// Add any necessary deactivation logic specific to your behavior.
-    /// </summary>
-    /// <remarks>
-    /// A Piece can be activated and deactivated multiple times while its <see cref="BoardContact"/> is active, depending
-    /// on the <see cref="Conditions"/>.
-    /// </remarks>
-    /// <param name="context">The necessary context for processing the contact and making decisions about behavior.</param>
-    protected virtual void OnDeactivate(PieceBehaviorContext context) { }
-
-    /// <summary>
-    /// Add any necessary logic specific to your behavior for when the Piece has been removed from Board.
-    /// </summary>
-    /// <param name="context">The necessary context for processing the contact and making decisions about behavior.</param>
-    protected virtual void OnRemoved(PieceBehaviorContext context) { }
-
-    [Inject]
-    private void Injection(DiContainer container, IPieceBehaviorSystem pieceBehaviorSystem)
-    {
-        _activeBehaviorContactIDs.Clear();
-        _pieceBehaviorSystem = pieceBehaviorSystem;
-
-        if(string.IsNullOrWhiteSpace(m_dataProviderName)) { return; }
-        
-        IDataProvider dataProvider = container.ResolveId<IDataProvider>(m_dataProviderName);
-        if(dataProvider == null)
-        {
-            UnityEngine.Debug.LogError($"{nameof(PieceBehavior)}: <{GetType().Name}> could not find {nameof(IDataProvider)} with name <{m_dataProviderName}>.");
-
-            return;
-        }
-        
-        DataProvider = dataProvider;
-    }
-
-    private bool IsBehaviorActive(BoardContact boardContact)
-    {
-        return _activeBehaviorContactIDs.Contains(boardContact.contactId);
-    }
-    
-    private bool IsBehaviorPendingSettle(BoardContact boardContact)
-    {
-        return _pendingSettleFramesByContactId.ContainsKey(boardContact.contactId);
-    }
-
-    private void SetBehaviorActive(BoardContact boardContact, bool isActive = true)
-    {
-        if(isActive)
-        {
-            _activeBehaviorContactIDs.Add(boardContact.contactId);
-        }
-        else
-        {
-            _activeBehaviorContactIDs.Remove(boardContact.contactId);
-        }
-    }
-
-    private bool EvaluateConditions(PieceBehaviorContext context)
+    /// <inheritdoc />
+    public bool EvaluateConditions(PieceBehaviorContext context)
     {
         for(int i = 0; i < Conditions.Length; ++i)
         {
@@ -204,60 +89,40 @@ public abstract class PieceBehavior : IPieceBehavior
         return true;
     }
 
-    private void HandleSettle(PieceBehaviorContext context)
-    {
-        if(UsingPieceSettling)
-        {
-            _pendingSettleFramesByContactId[context.ActiveContact.contactId] = PieceSettlingFrames;
-        }
-        else
-        {
-            OnPlaced(context);
-            Activate(context);
-        }
-    }
+    /// <inheritdoc />
+    public abstract void Place(PieceBehaviorContext context);
 
-    private void Activate(PieceBehaviorContext context)
-    {
-        SetBehaviorActive(context.ActiveContact);
-        OnActivate(context);
-    }
+    /// <inheritdoc />
+    public abstract void Activate(PieceBehaviorContext context);
 
-    private void Update(PieceBehaviorContext context)
+    /// <inheritdoc />
+    public abstract void Update(PieceBehaviorContext context);
+
+    /// <inheritdoc />
+    public abstract void Deactivate(PieceBehaviorContext context);
+
+    /// <inheritdoc />
+    public abstract void PickUp(PieceBehaviorContext context);
+
+    [Inject]
+    private void Injection(
+        [NotNull] ILoggerFactory loggerFactory, [NotNull] DiContainer container
+    )
     {
-        int contactId = context.ActiveContact.contactId;
-        if(UsingPieceSettling && _pendingSettleFramesByContactId.TryGetValue(contactId, out int remainingFrames))
+        _logger = loggerFactory.Get<LogChannels.PieceBehaviorSystem>(this);
+        _pieceSettlingResolver = new PieceSettlingResolver(m_pieceSettlingStrategies);
+
+        if(string.IsNullOrWhiteSpace(m_dataProviderName)) { return; }
+        
+        IDataProvider dataProvider = container.ResolveId<IDataProvider>(m_dataProviderName);
+        if(dataProvider == null)
         {
-            if(remainingFrames > 0)
-            {
-                _pendingSettleFramesByContactId[contactId] = remainingFrames - 1;
-                return;
-            }
-
-            _pendingSettleFramesByContactId.Remove(contactId);
-            OnPlaced(context);
-            Activate(context);
+            _logger.Error()?.Log($"Could not find {nameof(IDataProvider)} with name <{m_dataProviderName}>.");
 
             return;
         }
-
-        if(IsBehaviorActive(context.ActiveContact) == false)
-        {
-            // Contact is ongoing, but behavior needs to be activated
-            Activate(context);
-        }
         
-        OnUpdate(context);
-    }
-
-    private void Deactivate(PieceBehaviorContext context)
-    {
-        _pendingSettleFramesByContactId.Remove(context.ActiveContact.contactId);
-        
-        if(IsBehaviorActive(context.ActiveContact) == false) { return; }
-
-        OnDeactivate(context);
-        SetBehaviorActive(context.ActiveContact, false);
+        DataProvider = dataProvider;
     }
 }
 }

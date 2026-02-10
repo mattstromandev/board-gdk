@@ -17,23 +17,35 @@ public class SyncPosition : PieceBehavior
     [Tooltip("The axis treated as world up when determining the movement plane.")]
     [SerializeField]
     private Vector3 m_worldUpAxis = Vector3.up;
+    
+    [Tooltip("An offset, in screen space, to apply to the position.")]
+    [SerializeField]
+    private Vector2 m_offset = Vector2.zero;
 
     [Tooltip("Layers to raycast against when resolving the surface position.")]
     [SerializeField]
     private LayerMask m_surfaceLayers = ~0;
 
     /// <inheritdoc />
-    protected override void OnActivate(PieceBehaviorContext context) { SetPosition(context); }
+    public override void Place(PieceBehaviorContext context) { }
 
     /// <inheritdoc />
-    protected override void OnUpdate(PieceBehaviorContext context)
+    public override void Activate(PieceBehaviorContext context) { SetPosition(context); }
+
+    /// <inheritdoc />
+    public override void Update(PieceBehaviorContext context)
     {
-        if(context.ActiveContact.phase != BoardContactPhase.Moved) { return; }
+        // TODO: Handle the ability to specify if this should be updated in more than just move.
+        // if(context.ContactState.phase != BoardContactPhase.Moved) { return; }
 
         SetPosition(context);
     }
 
-    protected override void OnDeactivate(PieceBehaviorContext context) { }
+    /// <inheritdoc />
+    public override void Deactivate(PieceBehaviorContext context) { }
+
+    /// <inheritdoc />
+    public override void PickUp(PieceBehaviorContext context) { }
 
     private void SetPosition(PieceBehaviorContext context)
     {
@@ -42,7 +54,7 @@ public class SyncPosition : PieceBehavior
 
         Transform anchorTransform = context.VirtualPiece.AnchorTransform;
         Vector3 currentWorldPosition = anchorTransform.position;
-        Vector3 targetWorldPosition = context.ActiveContact.GetWorldPosition(mainCamera, m_worldUpAxis, currentWorldPosition);
+        Vector3 targetWorldPosition = context.ContactState.GetWorldPosition(mainCamera, m_worldUpAxis, m_offset, currentWorldPosition);
         // TODO: need to work on this surface resolution logic because it seems busted. If the surface layers is set to
         // Nothing (0), it should skip the raycast, but currently it still does it.
         // targetWorldPosition = ResolveSurfacePosition(targetWorldPosition, digitalTransform, mainCamera);

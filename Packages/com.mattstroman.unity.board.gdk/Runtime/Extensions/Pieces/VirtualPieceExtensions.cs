@@ -37,7 +37,7 @@ public static class VirtualPieceExtensions
     /// <param name="range">The allowed range, in world units.</param>
     /// <param name="camera">The <see cref="Camera"/> to use for perspective.</param>
     /// <returns>True if the associated Piece is within range of the <paramref name="targetWorldPosition"/>; false otherwise.</returns>
-    public static bool IsPieceInRange(this VirtualPiece me, Vector3 targetWorldPosition, float range, Camera camera)
+    public static bool IsPieceInRange(this IVirtualPiece me, Vector3 targetWorldPosition, float range, Camera camera)
     {
         BoardContact pieceBoardContact = me.GetBoardContact();
 

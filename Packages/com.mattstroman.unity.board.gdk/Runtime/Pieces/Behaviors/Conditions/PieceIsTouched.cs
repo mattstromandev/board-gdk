@@ -1,5 +1,7 @@
 ﻿using System;
 
+using BoardGDK.Extensions.Pieces;
+
 using Zenject;
 
 namespace BoardGDK.Pieces.Behaviors.Conditions

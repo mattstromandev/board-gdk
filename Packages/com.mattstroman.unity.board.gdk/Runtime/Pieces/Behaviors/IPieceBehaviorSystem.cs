@@ -18,10 +18,21 @@ public interface IPieceBehaviorSystem
     public IPieceBehaviorPrioritySettings PrioritySettings { get; }
     
     /// <summary>
-    /// Process behaviors for an active contact on Board.
+    /// Handle placement of a virtual piece in the digital world for an active <see cref="BoardContact"/> on Board.
     /// </summary>
-    /// <param name="boardContact">The active <see cref="BoardContact"/> to process.</param>
-    /// <param name="virtualPiece">The <see cref="IVirtualPiece"/> associated with the active contact.</param>
-    public void ProcessBoardContact(BoardContact boardContact, IVirtualPiece virtualPiece);
+    /// <param name="trackingContext">The <see cref="PieceTrackingContext"/> associated with the active <see cref="BoardContact"/>.</param>
+    public void Place(PieceTrackingContext trackingContext);
+
+    /// <summary>
+    /// Process behaviors for an active <see cref="BoardContact"/> on Board.
+    /// </summary>
+    /// <param name="trackingContext">The <see cref="PieceTrackingContext"/> associated with the active <see cref="BoardContact"/>.</param>
+    public void Update(PieceTrackingContext trackingContext);
+    
+    /// <summary>
+    /// Handle removal of a virtual piece from the digital world for a <see cref="BoardContact"/> that is no longer active on Board.
+    /// </summary>
+    /// <param name="trackingContext">The <see cref="PieceTrackingContext"/> associated with the removed <see cref="BoardContact"/>.</param>
+    public void PickUp(PieceTrackingContext trackingContext);
 }
 }

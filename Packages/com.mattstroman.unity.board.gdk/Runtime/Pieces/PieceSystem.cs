@@ -4,24 +4,33 @@ using System.Linq;
 
 using Board.Input;
 
-using BoardGDK.Extensions.Pieces;
 using BoardGDK.Pieces.Behaviors;
+
+using JetBrains.Annotations;
+
+using Rahmen.Logging;
 
 using UnityEngine;
 
 using Zenject;
+
+using Object = UnityEngine.Object;
 
 namespace BoardGDK.Pieces
 {
 /// <summary>
 /// Default implementation of the <see cref="IPieceSystem"/> interface.
 /// </summary>
-public class PieceSystem : MonoBehaviour, IPieceSystem
+public class PieceSystem : IPieceSystem, ITickable
 {
-    private IInstantiator _instantiator;
-    private IPieceBehaviorSystem _pieceBehaviorSystem;
-    private IPieceSetDefinition[] _availablePieceSetDefinitions;
-    private readonly Dictionary<int, VirtualPiece> _activePiecesByBoardContactID = new();
+    private readonly IInstantiator _instantiator;
+    private readonly IPieceBehaviorSystem _pieceBehaviorSystem;
+    private readonly IPieceSetDefinition[] _availablePieceSetDefinitions;
+    private readonly IPieceSettlingStrategy[] _pieceSettlingStrategies;
+    private readonly IRahmenLogger _logger;
+    private readonly Dictionary<(int contactID, int glyphID), PieceTrackingContext> _pieceTrackingContextMap = new();
+    private readonly PieceSettlingResolver _pieceSettlingResolver;
+    private Transform _virtualPieceContainer;
 
     /// <inheritdoc />
     // TODO: Make this visible as read only in the inspector for debugging purposes
@@ -29,6 +38,22 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
 
     /// <inheritdoc />
     public event Action<IPieceSetDefinition> PieceSetChanged;
+
+    public PieceSystem([NotNull] ILoggerFactory loggerFactory, [NotNull] IInstantiator instantiator, [NotNull] IPieceBehaviorSystem pieceBehaviorSystem,
+        [NotNull] IPieceSettlingStrategy[] pieceSettlingStrategies, [NotNull] IPieceSetDefinition[] availablePieceSetDefinitions
+    )
+    {
+        _logger = loggerFactory.Get<LogChannels.PieceSystem>(this);
+        _instantiator = instantiator;
+        _pieceBehaviorSystem = pieceBehaviorSystem;
+        _availablePieceSetDefinitions = availablePieceSetDefinitions ?? Array.Empty<IPieceSetDefinition>();
+        _pieceSettlingResolver = new PieceSettlingResolver(pieceSettlingStrategies);
+        
+        _logger.Trace()?.Log("Initializing...");
+        
+        BoardInput.settingsChanged += OnBoardInputSettingsChanged;
+        ChangePieceSet(_availablePieceSetDefinitions[0]);
+    }
 
     /// <inheritdoc />
     public void ChangePieceSet(IPieceSetDefinition newPieceSet)
@@ -38,48 +63,29 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
             throw new ArgumentNullException(nameof(newPieceSet));
         }
         
-        if(BoardInput.settings == newPieceSet.InputSettings)
+        _logger.Trace()?.Log($"Handling request to change piece set to <{newPieceSet.PieceSetName}>.");
+        
+        // Board may already have these settings, but we need to sync up
+        if(BoardInput.settings == newPieceSet.InputSettings && ActivePieceSetDefinition != newPieceSet)
         {
-            ActivePieceSetDefinition = newPieceSet;
+            _logger.Notice()?.Log($"Board's input settings were already set to <{newPieceSet.PieceSetName}>; syncing the piece system.");
+            
+            SetPieceSet(newPieceSet);
+            
             return;
         }
         
-        // TODO: gracefully handle resetting pieces on board when changing piece sets so that behaviors
-        // can have a chance to clean up
+        // We tell Board to change, then Board confirms with us via the settings changed event, at which point we change
+        // our piece set and confirm the change with the PieceSetChanged event. This way, Board is always the source of
+        // truth for what the current settings are, and we only change our piece set in response to that, which keeps
+        // everything nicely in sync.
+        _logger.Notice()?.Log($"Asking Board to set input settings to <{newPieceSet.PieceSetName}>.");
+        
         BoardInput.settings = newPieceSet.InputSettings;
     }
 
     /// <inheritdoc />
-    public bool IsOnBoard(int glyphID) { return TryGetPiecesOnBoard(glyphID, out _); }
-
-    /// <inheritdoc />
-    public bool IsOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition)
-    {
-        return TryGetPiecesOnBoard(pieceBehaviorDefinition, out _);
-    }
-
-    /// <inheritdoc />
-    public bool IsTouched(int glyphID)
-    {
-        bool isPieceOnBoard = TryGetPiecesOnBoard(glyphID, out VirtualPiece[] pieces);
-        
-        if(isPieceOnBoard == false) { return false; }
-        
-        return pieces.Any(piece => piece.IsTouched());
-    }
-
-    /// <inheritdoc />
-    public bool IsTouched(PieceBehaviorDefinition pieceBehaviorDefinition)
-    {
-        bool isPieceOnBoard = TryGetPiecesOnBoard(pieceBehaviorDefinition, out VirtualPiece[] pieces);
-        
-        if(isPieceOnBoard == false) { return false; }
-        
-        return pieces.Any(piece => piece.IsTouched());
-    }
-
-    /// <inheritdoc />
-    public bool TryGetPiecesOnBoard(int glyphID, out VirtualPiece[] pieces)
+    public bool TryGetPiecesOnBoard(int glyphID, out IVirtualPiece[] pieces)
     {
         pieces = GetPiecesOnBoard(glyphID);
 
@@ -87,55 +93,18 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
     }
 
     /// <inheritdoc />
-    public bool TryGetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition, out VirtualPiece[] pieces)
+    public bool TryGetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition, out IVirtualPiece[] pieces)
     {
         pieces = GetPiecesOnBoard(pieceBehaviorDefinition);
 
         return pieces.Length > 0;
     }
 
-    protected VirtualPiece[] GetPiecesOnBoard(int glyphID)
+    /// <inheritdoc />
+    public virtual void Tick()
     {
-        return _activePiecesByBoardContactID.Values.Where(piece => piece.GlyphID == glyphID).ToArray();
-    }
-
-    protected VirtualPiece[] GetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition)
-    {
-        return _activePiecesByBoardContactID.Values
-            .Where(piece => pieceBehaviorDefinition.GlyphIDs.Contains(piece.GlyphID)).ToArray();
-    }
-
-    [Inject]
-    private void Injection(
-        IInstantiator instantiator, IPieceBehaviorSystem pieceBehaviorSystem
-      , IPieceSetDefinition[] availablePieceSetDefinitions
-    )
-    {
-        _instantiator = instantiator;
-        _pieceBehaviorSystem = pieceBehaviorSystem;
-
-        if(availablePieceSetDefinitions.Length == 0)
-        {
-            UnityEngine.Debug.LogError($"{nameof(PieceSystem)}: No piece set definitions were injected.");
-        }
-        
-        _availablePieceSetDefinitions = availablePieceSetDefinitions;
-    }
-
-    protected virtual void OnEnable()
-    {
-        BoardInput.settingsChanged += OnBoardInputSettingsChanged;
-        _activePiecesByBoardContactID.Clear();
-    }
-
-    protected virtual void Start()
-    {
-        ChangePieceSet(_availablePieceSetDefinitions[0]);
-    }
-
-    protected virtual void Update()
-    {
-        if(_pieceBehaviorSystem == null) { return; }
+        // May not have a matching active piece set
+        if(ActivePieceSetDefinition == null) { return; }
 
         foreach(BoardContact boardContact in BoardInput.GetActiveContacts(BoardContactType.Glyph))
         {
@@ -143,92 +112,171 @@ public class PieceSystem : MonoBehaviour, IPieceSystem
         }
     }
 
-    protected virtual void OnDisable()
+    protected IVirtualPiece[] GetPiecesOnBoard(int glyphID)
     {
-        BoardInput.settingsChanged -= OnBoardInputSettingsChanged;
+        return _pieceTrackingContextMap.Values.Where(context => context.GlyphID == glyphID && context.HasSettled)
+            .Select(context => context.VirtualPiece).ToArray();
     }
 
-    protected virtual void ProcessBoardContact(BoardContact boardContact)
+    protected IVirtualPiece[] GetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition)
     {
-        if(boardContact.phase == BoardContactPhase.None) { return; }
+        return _pieceTrackingContextMap.Values
+            .Where(context => pieceBehaviorDefinition.GlyphIDs.Contains(context.GlyphID) && context.HasSettled)
+            .Select(context => context.VirtualPiece).ToArray();
+    }
 
-        if(_activePiecesByBoardContactID.TryGetValue(boardContact.contactId, out VirtualPiece piece) == false)
+    protected virtual void ProcessBoardContact(BoardContact contact)
+    {
+        (int contactID, int glyphID) trackingKey = (contact.contactId, contact.glyphId);
+        _logger.Trace()?.Log($"Processing board contact <{trackingKey}> in phase <{contact.phase}> at position <{contact.screenPosition}>.");
+        
+        if(_pieceTrackingContextMap.TryGetValue(trackingKey, out PieceTrackingContext trackingContext) == false)
         {
-            // It's possible the contact was already ended or canceled in the same frame it began, so it would be an
-            // unknown piece, but we shouldn't track it.
-            if(boardContact.isNoneEndedOrCanceled)
+            // It's possible the contact was already ended or canceled in the same frame it began, in which case we don't need to do anything
+            if(contact.isNoneEndedOrCanceled)
             {
+                _logger.Trace()?.Log($"Ignoring new board contact <{trackingKey}> because its phase is already <{contact.phase}> in the same frame it was observed as new.");
+                
                 return;
             }
             
-            string pieceName = $"Piece_{boardContact.contactId}";
-
-            if(boardContact.phase == BoardContactPhase.Began)
+            if(contact.phase != BoardContactPhase.Began)
             {
-                UnityEngine.Debug.Log(
-                    $"{nameof(PieceSystem)}: Creating virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
-                );
-
-                GameObject instance = _instantiator.CreateEmptyGameObject(pieceName);
-                piece = instance.AddComponent<VirtualPiece>();
-                piece.BoardContactID = boardContact.contactId;
-                piece.GlyphID = boardContact.glyphId;
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning(
-                    $"{nameof(PieceSystem)}: Unexpected phase for unknown board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
+                // We should only be seeing new contacts in the Began phase, so if we see one in a different phase, something has gone seriously wrong.
+                _logger.Error()?.Log(
+                    $"Ignoring board contact <{trackingKey}> due to an unexpected initial phase of <{contact.phase}>. The contact should have been observed in the Began phase, so this may indicate an issue with the {nameof(BoardInput)} system or a desynchronization between the it and this system."
                 );
                 
-                // The piece has somehow been orphaned and we need to relocate it.
-                piece = FindObjectsByType<VirtualPiece>(FindObjectsSortMode.InstanceID)
-                    .SingleOrDefault(p => p.name == pieceName);
-
-                if(piece == null)
-                {
-                    UnityEngine.Debug.LogError(
-                        $"{nameof(PieceSystem)}: a virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}> does not exist, but the phase is in a state when it should; Phase: <{boardContact.phase}>"
-                    );
-
-                    return;
-                }
-                
-                UnityEngine.Debug.Log(
-                    $"{nameof(PieceSystem)}: relocated existing virtual piece for board contact <{boardContact.contactId}>, glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
-                );
+                return;
             }
-
-            _activePiecesByBoardContactID.Add(boardContact.contactId, piece);
+            
+            _logger.Debug()?.Log($"Tracking new board contact <{trackingKey}>; initial screen position: {contact.screenPosition}. Piece placement pending settlement.");
+            
+            trackingContext = new PieceTrackingContext
+            {
+                NumFramesActive = 1,
+                InitialScreenPosition = contact.screenPosition
+            };
+            _pieceTrackingContextMap.Add(trackingKey, trackingContext);
         }
 
-        _pieceBehaviorSystem.ProcessBoardContact(boardContact, piece);
-
-        if(boardContact.isNoneEndedOrCanceled)
+        trackingContext.ContactState = contact;
+        
+        if(trackingContext.HasSettled == false)
         {
-            UnityEngine.Debug.Log(
-                $"{nameof(PieceSystem)}: Destroying virtual piece for board contact <{boardContact.contactId}> for glyph <{boardContact.glyphId}>; Phase: <{boardContact.phase}>"
-            );
-            _activePiecesByBoardContactID.Remove(boardContact.contactId);
-            Destroy(piece.gameObject);
+            if(contact.isNoneEndedOrCanceled)
+            {
+                _logger.Debug()?.Log($"Board contact <{trackingKey}> failed to settle before ending with phase <{contact.phase}>. Ending contact tracking.");
+                _pieceTrackingContextMap.Remove(trackingKey);
+                
+                return;
+            }
+            
+            _logger.Trace()?.Log($"Processing piece settling strategies for <{trackingKey}> in phase <{contact.phase}>.");
+            
+            trackingContext.HasSettled = _pieceSettlingResolver.HaveSettled(trackingContext);
+
+            if(trackingContext.HasSettled == false)
+            {
+                _logger.Trace()?.Log($"Board contact <{trackingKey}> has not settled yet.");
+                ++trackingContext.NumFramesActive;
+
+                return;
+            }
+
+            bool isKnownPieceName = ActivePieceSetDefinition.GlyphIDMapping.TryGetValue(trackingKey.glyphID, out string pieceName);
+            string virtualPieceName = $"{(isKnownPieceName ? pieceName : "PieceNameUnknown")} {trackingKey}";
+            _logger.Notice()?.Log($"Board contact <{trackingKey}> has settled after <{trackingContext.NumFramesActive}> frames. Placing piece <{virtualPieceName}>.");
+            
+            GameObject instance = _instantiator.CreateEmptyGameObject(virtualPieceName);
+            VirtualPiece piece = instance.AddComponent<VirtualPiece>();
+            piece.transform.SetParent(_virtualPieceContainer);
+            piece.BoardContactID = contact.contactId;
+            piece.GlyphID = contact.glyphId;
+            trackingContext.VirtualPiece = piece;
+
+            _pieceBehaviorSystem.Place(trackingContext);
         }
+        
+        _logger.Trace()?.Log($"Processing piece behaviors for <{trackingKey}> in phase <{contact.phase}>.");
+
+        _pieceBehaviorSystem.Update(trackingContext);
+
+        if(contact.isNoneEndedOrCanceled)
+        {
+            _pieceBehaviorSystem.PickUp(trackingContext);
+            _pieceTrackingContextMap.Remove(trackingKey);
+            Object.Destroy(trackingContext.VirtualPiece.AnchorTransform.gameObject);
+            
+            _logger.Notice()?.Log($"Board contact <{trackingKey}> has ended with phase <{contact.phase}>. Ending contact tracking.");
+        }
+        
+        ++trackingContext.NumFramesActive;
     }
 
     private void OnBoardInputSettingsChanged()
     {
+        _logger.Trace()?.Log($"Handling notification of new Board input settings <{BoardInput.settings.name}>.");
+        
         IPieceSetDefinition matchingPieceSet = _availablePieceSetDefinitions
-            .SingleOrDefault(
-                set => set.InputSettings == BoardInput.settings
-            );
+            .SingleOrDefault(set => set.InputSettings == BoardInput.settings);
 
         if(matchingPieceSet == null)
         {
-            UnityEngine.Debug.LogError($"{nameof(PieceSystem)}: No matching {nameof(IPieceSetDefinition)} found for the current {nameof(BoardInput)} settings: {JsonUtility.ToJson(BoardInput.settings)}.");
+            _logger.Warning()?.Log($"No matching {nameof(IPieceSetDefinition)} found for new {nameof(BoardInput)} settings <{BoardInput.settings.name}>. The piece system will not process any contacts for this set.");
+        }
+        else
+        {
+            _logger.Debug()?.Log($"Matching piece set definition located for <{BoardInput.settings.name}>: <{matchingPieceSet.PieceSetName}>.");
+        }
+        
+        SetPieceSet(matchingPieceSet);
+        
+        _logger.Trace()?.Log("Notifying observers of piece set change.");
+        
+        PieceSetChanged?.Invoke(ActivePieceSetDefinition);
+    }
+
+    private void SetPieceSet(IPieceSetDefinition newPieceSet)
+    {
+        if(ActivePieceSetDefinition == newPieceSet)
+        {
+            _logger.Trace()?.Log($"The active piece set is already <{newPieceSet?.PieceSetName}>.");
             
             return;
         }
         
-        ActivePieceSetDefinition = matchingPieceSet;
-        PieceSetChanged?.Invoke(ActivePieceSetDefinition);
+        if(ActivePieceSetDefinition != null)
+        {
+            _logger.Notice()?.Log($"Cleaning up piece set <{ActivePieceSetDefinition.PieceSetName}>.");
+
+            // Need to clean up any residual tracking contexts because Board does not guarantee that all contacts will
+            // end cleanly, and we don't want pieces lingering around after a piece set change.
+            foreach(PieceTrackingContext trackingContext in _pieceTrackingContextMap.Values)
+            {
+                _pieceBehaviorSystem.PickUp(trackingContext);
+                Object.Destroy(trackingContext.VirtualPiece.AnchorTransform);
+            }
+            _pieceTrackingContextMap.Clear();
+
+            if(_virtualPieceContainer != null)
+            {
+                _logger.Trace()?.Log($"Destroying virtual piece container <{_virtualPieceContainer.name}> for piece set <{ActivePieceSetDefinition.PieceSetName}>.");
+
+                Object.Destroy(_virtualPieceContainer.gameObject);
+            }
+        }
+        
+        ActivePieceSetDefinition = newPieceSet;
+        
+        if(ActivePieceSetDefinition != null)
+        {
+            _logger.Trace()?.Log($"Creating virtual piece container <{newPieceSet.PieceSetName}> for piece set <{ActivePieceSetDefinition.PieceSetName}>.");
+            
+            _virtualPieceContainer = _instantiator.CreateEmptyGameObject(newPieceSet.PieceSetName).transform;
+        }
+        
+        _logger.Notice()?.Log($"Piece set changed to <{ActivePieceSetDefinition?.PieceSetName}>.");
     }
 }
 }

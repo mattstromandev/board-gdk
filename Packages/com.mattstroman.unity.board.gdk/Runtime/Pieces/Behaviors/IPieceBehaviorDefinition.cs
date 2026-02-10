@@ -8,6 +8,11 @@ namespace BoardGDK.Pieces.Behaviors
 public interface IPieceBehaviorDefinition
 {
     /// <summary>
+    /// The name of this <see cref="IPieceBehaviorDefinition"/>.
+    /// </summary>
+    public string Name { get; }
+    
+    /// <summary>
     /// The glyph IDs to which this definition should apply.
     /// </summary>
     /// <remarks>

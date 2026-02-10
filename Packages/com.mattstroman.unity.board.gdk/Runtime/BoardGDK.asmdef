@@ -5,7 +5,8 @@
         "Board",
         "MackySoft.SerializeReferenceExtensions",
         "Zenject",
-        "AYellowpaper.SerializedCollections"
+        "AYellowpaper.SerializedCollections",
+        "Rahmen"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
