@@ -55,6 +55,7 @@ public class SpawnSynced : PieceBehavior
             _logger.Debug()?.Log($"Instantiating prefab <{prefab.name}> as child of <{context.VirtualPiece.Name}>.");
             GameObject prefabInstance = _instantiator.InstantiatePrefab(prefab, context.VirtualPiece.AnchorTransform);
             context.VirtualPiece.AddDigitalPiece(prefabInstance);
+            prefabInstance.SetActive(false);
             prefabInstances.Add(prefabInstance);
         }
         
