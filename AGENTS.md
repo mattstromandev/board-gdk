@@ -17,6 +17,9 @@ This repository is for the development and testing of a game development kit (GD
 - Flag any logging of PII as P0.
 - In Unity: avoid heavy work on main thread; watch GC allocs.
 - All non-private members and types must have proper XML documentation (still preferred, but exception can be made for types in Unity Editor-only assemblies).
+- TODO items must be tracked in the code with a corresponding, existing issue in GitHub, and the issue number must be included in the TODO comment, with the convention `// TODO [#XXXX]: your comment here`
+- All Unity serialized and serialized reference fields/properties must have a Tooltip attribute describing their purpose and usage.
+- System.Linq usage is allowed in editor code and non-performance-critical code, but should be avoided in hot paths and runtime code where GC allocations would be a concern. In those cases, prefer manual loops or Span-based patterns.
 
 ## Referenced repositories
 
