@@ -65,6 +65,7 @@ public class PieceSystemInstaller : ScriptableObjectInstaller<PieceSystemInstall
         }
         
         Container.BindInstance(m_allBoardInputSettings).AsSingle();
+        Container.Bind<IPieceBehaviorSettings>().To<PieceBehaviorSettings>().FromInstance(m_globalPieceBehaviorSettings).AsSingle();
         Container.Bind<IPieceBehaviorSystem>().To<PieceBehaviorSystem>().AsSingle().WithArguments(
             m_globalPieceBehaviorSettings, m_pieceBehaviorPrioritySettings
         );
