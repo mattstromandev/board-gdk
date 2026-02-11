@@ -1,6 +1,5 @@
 ﻿using System;
 
-using BoardGDK.Extensions;
 using BoardGDK.Extensions.Board;
 using BoardGDK.Extensions.Pieces;
 
@@ -23,7 +22,7 @@ public class PieceInRange : DependentPieceCondition
     /// <inheritdoc />
     protected override bool DoEvaluation(PieceBehaviorContext context)
     {
-        Vector3 activeContactWorldPosition = context.ContactState.GetWorldPosition();
+        Vector3 activeContactWorldPosition = context.Contact.GetWorldPosition();
         
         return _pieceSystem?.IsPieceInRange(DependentPieceBehavior, activeContactWorldPosition, m_rangeRadius) ?? false;
     }

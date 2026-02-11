@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-using BoardGDK.Pieces.Attributes;
+using BoardGDK.BoardAdapters;
 
 using UnityEngine;
 
@@ -11,23 +12,27 @@ namespace BoardGDK.Pieces
 /// </summary>
 public class VirtualPiece : MonoBehaviour, IVirtualPiece
 {
-    /// <inheritdoc/>
-    [field: SerializeField]
-    [field: Tooltip("The ID of the active BoardContact this piece is linked to.")]
-    // TODO: Make this readonly in the inspector
-    public int BoardContactID { get; internal set; }
-
-    /// <inheritdoc/>
-    [field: SerializeField]
-    [field: PieceName]
-    [field: Tooltip("The glyph ID of the associated physical Piece.")]
-    // TODO: Make this readonly in the inspector
-    public int GlyphID { get; internal set; }
+    [SerializeField]
+    [Tooltip("The Board contact that this virtual piece is synced to")]
+    private SerializableBoardContact m_boardContact;
 
     [SerializeField]
     [Tooltip("The GameObjects currently representing this piece in the digital world, if there are any digital representation.")]
-    // TODO: Make this readonly in the inspector
     private List<GameObject> m_digitalPieces = new();
+
+    /// <inheritdoc/>
+    public IBoardContact BoardContact
+    {
+        get => m_boardContact;
+        internal set
+        {
+            if(value.GetType() != typeof(SerializableBoardContact))
+            {
+                throw new ArgumentException($"Type of value must be {nameof(SerializableBoardContact)}.", nameof(value));
+            }
+            m_boardContact = (SerializableBoardContact)value;
+        }
+    }
 
     /// <inheritdoc/>
     public Transform AnchorTransform => transform;

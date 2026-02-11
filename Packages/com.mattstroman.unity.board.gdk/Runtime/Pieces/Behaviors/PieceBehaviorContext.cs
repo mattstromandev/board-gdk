@@ -1,4 +1,4 @@
-﻿using Board.Input;
+﻿using BoardGDK.BoardAdapters;
 
 using UnityEngine;
 
@@ -17,8 +17,8 @@ public class PieceBehaviorContext : IPieceSettlingContext
     /// <inheritdoc cref="PieceTrackingContext.TrackingKey"/>
     public (int contactID, int glyphID) TrackingKey => TrackingContext.TrackingKey;
 
-    /// <inheritdoc cref="PieceTrackingContext.ContactState"/>
-    public BoardContact ContactState => TrackingContext.ContactState;
+    /// <inheritdoc cref="PieceTrackingContext.Contact"/>
+    public IBoardContact Contact => TrackingContext.Contact;
     
     /// <inheritdoc cref="PieceTrackingContext.BoardContactID"/>
     public int BoardContactID => TrackingContext.BoardContactID;

@@ -99,7 +99,7 @@ public class Spawn : PieceBehavior
     private void Instantiate(PieceBehaviorContext context)
     {
         Camera mainCamera = Camera.main;
-        Vector3 screenPosition = context.ContactState.screenPosition + m_spawnOffsetFromCenter;
+        Vector3 screenPosition = context.Contact.ScreenPosition + m_spawnOffsetFromCenter;
 
         if(context.VirtualPiece != null)
         {

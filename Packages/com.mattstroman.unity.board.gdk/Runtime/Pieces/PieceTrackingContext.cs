@@ -1,5 +1,7 @@
 ﻿using Board.Input;
 
+using BoardGDK.BoardAdapters;
+
 using UnityEngine;
 
 namespace BoardGDK.Pieces
@@ -12,7 +14,7 @@ public class PieceTrackingContext : IPieceSettlingContext
     /// <summary>
     /// The current state of the <see cref="BoardContact"/> as observed during the current or last active frame.
     /// </summary>
-    public BoardContact ContactState { get; internal set; }
+    public IBoardContact Contact { get; internal set; }
     
     /// <summary>
     /// The unique key that identifies the tracked piece across frames, consisting of the contact ID and glyph ID.
@@ -22,12 +24,12 @@ public class PieceTrackingContext : IPieceSettlingContext
     /// <summary>
     /// The ID of the active <see cref="BoardContact"/> this piece is linked to.
     /// </summary>
-    public int BoardContactID => ContactState.contactId;
+    public int BoardContactID => Contact.ContactId;
 
     /// <summary>
     /// The ID of the <see cref="BoardContactType.Glyph"/> the physical piece has.
     /// </summary>
-    public int GlyphID => ContactState.glyphId;
+    public int GlyphID => Contact.GlyphId;
     
     /// <summary>
     /// The number of frames the <see cref="BoardContact"/> has been active.

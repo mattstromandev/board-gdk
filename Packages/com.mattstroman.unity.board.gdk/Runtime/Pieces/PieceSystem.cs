@@ -4,6 +4,7 @@ using System.Linq;
 
 using Board.Input;
 
+using BoardGDK.BoardAdapters;
 using BoardGDK.Pieces.Behaviors;
 
 using JetBrains.Annotations;
@@ -160,7 +161,11 @@ public class PieceSystem : IPieceSystem, ITickable
             _pieceTrackingContextMap.Add(trackingKey, trackingContext);
         }
 
-        trackingContext.ContactState = contact;
+        trackingContext.Contact = new SerializableBoardContact(contact);
+        if(trackingContext.VirtualPiece is VirtualPiece castVirtualPiece)
+        {
+            castVirtualPiece.BoardContact = trackingContext.Contact;
+        }
         
         if(trackingContext.HasSettled == false)
         {
@@ -191,8 +196,7 @@ public class PieceSystem : IPieceSystem, ITickable
             GameObject instance = _instantiator.CreateEmptyGameObject(virtualPieceName);
             VirtualPiece piece = instance.AddComponent<VirtualPiece>();
             piece.transform.SetParent(_virtualPieceContainer);
-            piece.BoardContactID = contact.contactId;
-            piece.GlyphID = contact.glyphId;
+            piece.BoardContact = trackingContext.Contact;
             trackingContext.VirtualPiece = piece;
 
             _pieceBehaviorSystem.Place(trackingContext);

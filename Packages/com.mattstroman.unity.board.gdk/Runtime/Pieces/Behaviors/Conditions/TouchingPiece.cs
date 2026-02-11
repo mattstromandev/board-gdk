@@ -11,7 +11,7 @@ public class TouchingPiece : PieceBehaviorCondition
     /// <inheritdoc />
     protected override bool DoEvaluation(PieceBehaviorContext context)
     {
-        return context.ContactState.isTouched;
+        return context.Contact.IsTouched;
     }
 }
 }
