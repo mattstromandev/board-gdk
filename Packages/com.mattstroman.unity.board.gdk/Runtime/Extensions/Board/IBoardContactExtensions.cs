@@ -72,6 +72,15 @@ public static class IBoardContactExtensions
 
         return MemoryMarshal.Cast<BoardContactData, BoardContact>(MemoryMarshal.CreateSpan(ref data, 1))[0];
     }
+
+    /// <summary>
+    /// Convert this <see cref="BoardContact"/> to an <see cref="IBoardContact"/>.
+    /// </summary>
+    /// <returns>An <see cref="IBoardContact"/> with the values from this <see cref="BoardContact"/>.</returns>
+    public static IBoardContact AsIBoardContact(this BoardContact me)
+    {
+        return new SerializableBoardContact(me);
+    }
     
     /// <inheritdoc cref="BoardContactExtensions.GetWorldPosition(BoardContact)"/>
     public static Vector3 GetWorldPosition(this IBoardContact me)
