@@ -16,6 +16,7 @@ This repository is for the development and testing of a game development kit (GD
 - Follow established styles and namving conventions from existing files.
 - Flag any logging of PII as P0.
 - In Unity: avoid heavy work on main thread; watch GC allocs.
+- All non-private members and types must have proper XML documentation (still preferred, but exception can be made for types in Unity Editor-only assemblies).
 
 ## Referenced repositories
 
