@@ -15,16 +15,21 @@ public interface IVirtualPiece
     /// The name of the <see cref="IVirtualPiece"/>.
     /// </summary>
     public string Name => AnchorTransform.name;
-    
+
     /// <summary>
     /// The ID of the active <see cref="BoardContact"/> this piece is linked to.
     /// </summary>
-    public int BoardContactID { get; }
+    public int BoardContactID => BoardContact.contactId;
 
     /// <summary>
     /// The ID of the <see cref="BoardContactType.Glyph"/> the physical piece has.
     /// </summary>
-    public int GlyphID { get; }
+    public int GlyphID => BoardContact.glyphId;
+
+    /// <summary>
+    /// The <see cref="BoardContact"/> this <see cref="IVirtualPiece"/> is synced to.
+    /// </summary>
+    public BoardContact BoardContact { get; }
     
     /// <summary>
     /// The <see cref="Transform"/> that acts as the anchor for this piece in the digital world.

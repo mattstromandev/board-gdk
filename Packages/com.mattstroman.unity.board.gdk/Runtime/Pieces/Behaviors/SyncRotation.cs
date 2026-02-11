@@ -34,7 +34,7 @@ public class SyncRotation : PieceBehavior
     public override void Update(PieceBehaviorContext context)
     {
         // TODO: Handle the ability to specify if this should be updated in more than just move.
-        // if(context.ContactState.phase != BoardContactPhase.Moved) { return; }
+        if(context.Contact.phase != BoardContactPhase.Moved) { return; }
 
         SetRotation(context);
     }
@@ -47,7 +47,7 @@ public class SyncRotation : PieceBehavior
 
     private void SetRotation(PieceBehaviorContext context)
     {
-        float baseRotationDegrees = context.ContactState.orientation * Mathf.Rad2Deg + m_offsetDegrees;
+        float baseRotationDegrees = context.Contact.orientation * Mathf.Rad2Deg + m_offsetDegrees;
 
         if(m_snapStep > 0) { baseRotationDegrees = Mathf.RoundToInt(baseRotationDegrees / m_snapStep) * m_snapStep; }
 

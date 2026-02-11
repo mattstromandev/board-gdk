@@ -126,8 +126,8 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
         behaviorContext = new PieceBehaviorContext
         {
             TrackingContext = trackingContext,
-            InitialPlacementScreenPosition = trackingContext.ContactState.screenPosition,
-            InitialScreenPosition =  trackingContext.ContactState.screenPosition,
+            InitialPlacementScreenPosition = trackingContext.Contact.screenPosition,
+            InitialScreenPosition =  trackingContext.Contact.screenPosition,
             BehaviorDefinition = behaviorDefinition,
             State = GenericPool<PieceBehaviorState>.Get()
         };
@@ -150,8 +150,8 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             behaviorContext = new PieceBehaviorContext
             {
                 TrackingContext = trackingContext,
-                InitialPlacementScreenPosition = trackingContext.ContactState.screenPosition,
-                InitialScreenPosition =  trackingContext.ContactState.screenPosition,
+                InitialPlacementScreenPosition = trackingContext.Contact.screenPosition,
+                InitialScreenPosition =  trackingContext.Contact.screenPosition,
                 BehaviorDefinition = behaviorDefinition,
                 State = GenericPool<PieceBehaviorState>.Get()
             };
@@ -192,14 +192,14 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             // Need to reset and handle activation settling
             behaviorContext.HasActivationSettled = false;
             behaviorContext.NumFramesActive = 1;
-            behaviorContext.InitialScreenPosition = trackingContext.ContactState.screenPosition;
+            behaviorContext.InitialScreenPosition = trackingContext.Contact.screenPosition;
         }
         
         if(behaviorContext.HasActivationSettled == false)
         {
-            if(behaviorContext.ContactState.isNoneEndedOrCanceled)
+            if(behaviorContext.Contact.isNoneEndedOrCanceled)
             {
-                _logger.Debug()?.Log($"Piece behavior <{behavior.GetType().Name}> failed to settle for <{trackingContext.TrackingKey}> before it ended with phase <{trackingContext.ContactState.phase}>. Behavior will not be activated.");
+                _logger.Debug()?.Log($"Piece behavior <{behavior.GetType().Name}> failed to settle for <{trackingContext.TrackingKey}> before it ended with phase <{trackingContext.Contact.phase}>. Behavior will not be activated.");
                 
                 // We still need the behavior context for piece pickup, so we don't remove it yet
                 

@@ -36,14 +36,12 @@ public class SpawnSynced : PieceBehavior
 
     private IInstantiator _instantiator;
     private IRahmenLogger _logger;
-    private readonly List<GameObject> _prefabInstances = new();
+    private const string _prefabInstancesKey = "PrefabInstances";
 
     /// <inheritdoc />
-    public override void Place(PieceBehaviorContext context) { }
-
-    /// <inheritdoc />
-    public override void Activate(PieceBehaviorContext context)
+    public override void Place(PieceBehaviorContext context)
     {
+        List<GameObject> prefabInstances = UnityEngine.Pool.ListPool<GameObject>.Get();
         for(int i = 0; i < m_prefabsToSpawn.Length; ++i)
         {
             GameObject prefab = m_prefabsToSpawn[i];
@@ -57,7 +55,20 @@ public class SpawnSynced : PieceBehavior
             _logger.Debug()?.Log($"Instantiating prefab <{prefab.name}> as child of <{context.VirtualPiece.Name}>.");
             GameObject prefabInstance = _instantiator.InstantiatePrefab(prefab, context.VirtualPiece.AnchorTransform);
             context.VirtualPiece.AddDigitalPiece(prefabInstance);
-            _prefabInstances.Add(prefabInstance);
+            prefabInstance.SetActive(false);
+            prefabInstances.Add(prefabInstance);
+        }
+        
+        context.State.SetValue(_prefabInstancesKey, prefabInstances);
+    }
+
+    /// <inheritdoc />
+    public override void Activate(PieceBehaviorContext context)
+    {
+        if(context.State.TryGetValue(_prefabInstancesKey, out List<GameObject> prefabInstances) == false) { return; }
+        for(int i = 0; i < prefabInstances.Count; ++i)
+        {
+            prefabInstances[i].SetActive(true);
         }
     }
 
@@ -67,9 +78,20 @@ public class SpawnSynced : PieceBehavior
     /// <inheritdoc />
     public override void Deactivate(PieceBehaviorContext context)
     {
-        foreach(GameObject prefabInstance in _prefabInstances)
+        if(context.State.TryGetValue(_prefabInstancesKey, out List<GameObject> prefabInstances) == false) { return; }
+        for(int i = 0; i < prefabInstances.Count; ++i)
         {
-            if(_prefabInstances == null)
+            prefabInstances[i].SetActive(false);
+        }
+    }
+
+    /// <inheritdoc />
+    public override void PickUp(PieceBehaviorContext context)
+    {
+        if(context.State.TryGetValue(_prefabInstancesKey, out List<GameObject> prefabInstances) == false) { return; }
+        foreach(GameObject prefabInstance in prefabInstances)
+        {
+            if(prefabInstance == null)
             {
                 _logger.Trace()?.Log($"Tracked prefab instance <{prefabInstance.name}> was already destroyed by other means.");
                 
@@ -81,11 +103,10 @@ public class SpawnSynced : PieceBehavior
             context.VirtualPiece.RemoveDigitalPiece(prefabInstance);
             Object.Destroy(prefabInstance);
         }
-        _prefabInstances.Clear();
-    }
 
-    /// <inheritdoc />
-    public override void PickUp(PieceBehaviorContext context) { }
+        UnityEngine.Pool.ListPool<GameObject>.Release(prefabInstances);
+        context.State.SetValue(_prefabInstancesKey, default(List<GameObject>));
+    }
 
     [Inject]
     private void Injection([NotNull] ILoggerFactory loggerFactory, [NotNull] IInstantiator instantiator)

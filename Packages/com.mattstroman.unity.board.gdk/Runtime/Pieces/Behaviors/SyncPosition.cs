@@ -36,7 +36,7 @@ public class SyncPosition : PieceBehavior
     public override void Update(PieceBehaviorContext context)
     {
         // TODO: Handle the ability to specify if this should be updated in more than just move.
-        // if(context.ContactState.phase != BoardContactPhase.Moved) { return; }
+        // if(context.Contact.phase != BoardContactPhase.Moved) { return; }
 
         SetPosition(context);
     }
@@ -54,7 +54,7 @@ public class SyncPosition : PieceBehavior
 
         Transform anchorTransform = context.VirtualPiece.AnchorTransform;
         Vector3 currentWorldPosition = anchorTransform.position;
-        Vector3 targetWorldPosition = context.ContactState.GetWorldPosition(mainCamera, m_worldUpAxis, m_offset, currentWorldPosition);
+        Vector3 targetWorldPosition = context.Contact.GetWorldPosition(mainCamera, m_worldUpAxis, m_offset, currentWorldPosition);
         // TODO: need to work on this surface resolution logic because it seems busted. If the surface layers is set to
         // Nothing (0), it should skip the raycast, but currently it still does it.
         // targetWorldPosition = ResolveSurfacePosition(targetWorldPosition, digitalTransform, mainCamera);
