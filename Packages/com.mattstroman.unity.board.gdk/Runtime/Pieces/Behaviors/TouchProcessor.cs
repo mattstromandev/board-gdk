@@ -50,7 +50,7 @@ public class TouchProcessor : PieceBehavior
             _lineRenderer.SetPosition(1, worldStartPos + _mainCamera.transform.forward * 10000);
 
             float touchDistanceFromPieceCenter
-                = Vector2.Distance(context.Contact.ScreenPosition, activeTouch.screenPosition);
+                = Vector2.Distance(context.Contact.screenPosition, activeTouch.screenPosition);
 
             if(touchDistanceFromPieceCenter > m_touchAcceptanceRange)
             {

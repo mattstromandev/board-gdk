@@ -28,13 +28,13 @@ public class StoreOrientation : PieceBehavior
     /// <inheritdoc />
     public override void Activate(PieceBehaviorContext context)
     {
-        _lastOrientationDegrees = context.Contact.Orientation;
+        _lastOrientationDegrees = context.Contact.orientation;
     }
 
     /// <inheritdoc />
     public override void Update(PieceBehaviorContext context)
     {
-        float orientationDegrees = context.Contact.Orientation * Mathf.Rad2Deg;
+        float orientationDegrees = context.Contact.orientation * Mathf.Rad2Deg;
 
         if(m_pieceOrientation != null) { m_pieceOrientation.Value = orientationDegrees; }
 

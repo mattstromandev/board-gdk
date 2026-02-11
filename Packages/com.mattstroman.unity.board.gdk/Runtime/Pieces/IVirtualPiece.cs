@@ -2,8 +2,6 @@
 
 using Board.Input;
 
-using BoardGDK.BoardAdapters;
-
 using UnityEngine;
 
 namespace BoardGDK.Pieces
@@ -21,17 +19,17 @@ public interface IVirtualPiece
     /// <summary>
     /// The ID of the active <see cref="BoardContact"/> this piece is linked to.
     /// </summary>
-    public int BoardContactID => BoardContact.ContactId;
+    public int BoardContactID => BoardContact.contactId;
 
     /// <summary>
     /// The ID of the <see cref="BoardContactType.Glyph"/> the physical piece has.
     /// </summary>
-    public int GlyphID => BoardContact.GlyphId;
+    public int GlyphID => BoardContact.glyphId;
 
     /// <summary>
-    /// The <see cref="IBoardContact"/> this <see cref="IVirtualPiece"/> is synced to.
+    /// The <see cref="BoardContact"/> this <see cref="IVirtualPiece"/> is synced to.
     /// </summary>
-    public IBoardContact BoardContact { get; }
+    public BoardContact BoardContact { get; }
     
     /// <summary>
     /// The <see cref="Transform"/> that acts as the anchor for this piece in the digital world.

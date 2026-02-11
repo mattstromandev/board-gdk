@@ -161,7 +161,7 @@ public class PieceSystem : IPieceSystem, ITickable
             _pieceTrackingContextMap.Add(trackingKey, trackingContext);
         }
 
-        trackingContext.Contact = new SerializableBoardContact(contact);
+        trackingContext.Contact = contact;
         if(trackingContext.VirtualPiece is VirtualPiece castVirtualPiece)
         {
             castVirtualPiece.BoardContact = trackingContext.Contact;

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Board.Input;
 
 using BoardGDK.BoardAdapters;
 
@@ -12,25 +13,35 @@ namespace BoardGDK.Pieces
 /// </summary>
 public class VirtualPiece : MonoBehaviour, IVirtualPiece
 {
+    // BoardContact is serialized in editor only for ease of debugging, but results in a boxing per frame, so it is compiled
+    // out for runtime. However, we may even want to add a scripting define to enable/disable it in the editor as well,
+    // if we find that the boxing is causing performance issues in the editor. It could be an opt-in-only feature for
+    // debugging purposes and piece behavior composition.
+#if UNITY_EDITOR
     [SerializeField]
     [Tooltip("The Board contact that this virtual piece is synced to")]
+    // ReSharper disable once NotAccessedField.Local
+    // Justification: Serialized for debugging purposes in editor only; not meant to be accessed directly.
     private SerializableBoardContact m_boardContact;
+#endif
 
     [SerializeField]
     [Tooltip("The GameObjects currently representing this piece in the digital world, if there are any digital representation.")]
     private List<GameObject> m_digitalPieces = new();
 
+    private BoardContact _nonSerializedBoardContact;
+
     /// <inheritdoc/>
-    public IBoardContact BoardContact
+    public BoardContact BoardContact
     {
-        get => m_boardContact;
-        internal set
+        get => _nonSerializedBoardContact;
+        internal set 
         {
-            if(value.GetType() != typeof(SerializableBoardContact))
-            {
-                throw new ArgumentException($"Type of value must be {nameof(SerializableBoardContact)}.", nameof(value));
-            }
-            m_boardContact = (SerializableBoardContact)value;
+        #if UNITY_EDITOR
+            m_boardContact = value;
+        #endif
+            
+            _nonSerializedBoardContact = value;
         }
     }
 
@@ -46,6 +57,7 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
         m_digitalPieces.Add(digitalPiece);
     }
 
+    /// <inheritdoc/>
     public void RemoveDigitalPiece(GameObject digitalPiece)
     {
         m_digitalPieces.Remove(digitalPiece);

@@ -26,7 +26,7 @@ public class SettleByInitialPosition : IPieceSettlingStrategy
     /// <inheritdoc />
     public bool HasSettled(IPieceSettlingContext context)
     {
-        float distance = Vector2.Distance(context.InitialScreenPosition, context.Contact.ScreenPosition);
+        float distance = Vector2.Distance(context.InitialScreenPosition, context.Contact.screenPosition);
         bool isSettled = distance < m_radius;
 
         if(isSettled)
