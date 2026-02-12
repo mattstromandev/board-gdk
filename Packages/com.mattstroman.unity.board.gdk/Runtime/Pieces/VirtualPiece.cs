@@ -3,8 +3,11 @@
 using Board.Input;
 
 using BoardGDK.BoardAdapters;
+using BoardGDK.Pieces.Behaviors;
 
 using UnityEngine;
+
+using Zenject;
 
 namespace BoardGDK.Pieces
 {
@@ -30,6 +33,7 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     private List<GameObject> m_digitalPieces = new();
 
     private BoardContact _nonSerializedBoardContact;
+    private PieceBehaviorSettings _pieceBehaviorSettings;
 
     /// <inheritdoc/>
     public BoardContact BoardContact
@@ -38,7 +42,7 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
         internal set 
         {
         #if UNITY_EDITOR
-            m_boardContact = value;
+            m_boardContact = new SerializableBoardContact(value, _pieceBehaviorSettings);
         #endif
             
             _nonSerializedBoardContact = value;
@@ -61,6 +65,15 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     public void RemoveDigitalPiece(GameObject digitalPiece)
     {
         m_digitalPieces.Remove(digitalPiece);
+    }
+
+    [Inject]
+    private void Injection(IPieceBehaviorSettings pieceBehaviorSettings)
+    {
+        if(pieceBehaviorSettings is PieceBehaviorSettings castPieceBehaviorSettings)
+        {
+            _pieceBehaviorSettings = castPieceBehaviorSettings;
+        }
     }
 }
 }
