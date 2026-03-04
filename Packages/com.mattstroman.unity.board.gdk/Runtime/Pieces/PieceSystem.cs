@@ -4,8 +4,8 @@ using System.Linq;
 
 using Board.Input;
 
-using BoardGDK.BoardAdapters;
 using BoardGDK.Pieces.Behaviors;
+using BoardGDK.Pieces.Events;
 
 using JetBrains.Annotations;
 
@@ -37,8 +37,9 @@ public class PieceSystem : IPieceSystem, ITickable
     // TODO: Make this visible as read only in the inspector for debugging purposes
     public IPieceSetDefinition ActivePieceSetDefinition { get; private set; }
 
-    /// <inheritdoc />
-    public event Action<IPieceSetDefinition> PieceSetChanged;
+    public event EventHandler<IPieceSetDefinitionEvent> PieceSetChanged;
+    public event EventHandler<IPieceEvent> PiecePlaced;
+    public event EventHandler<IPieceEvent> PiecePickedUp;
 
     public PieceSystem([NotNull] ILoggerFactory loggerFactory, [NotNull] IInstantiator instantiator, [NotNull] IPieceBehaviorSystem pieceBehaviorSystem,
         [NotNull] IPieceSettlingStrategy[] pieceSettlingStrategies, [NotNull] IPieceSetDefinition[] availablePieceSetDefinitions
@@ -69,7 +70,7 @@ public class PieceSystem : IPieceSystem, ITickable
         // Board may already have these settings, but we need to sync up
         if(BoardInput.settings == newPieceSet.InputSettings && ActivePieceSetDefinition != newPieceSet)
         {
-            _logger.Notice()?.Log($"Board's input settings were already set to <{newPieceSet.PieceSetName}>; syncing the piece system.");
+            _logger.Info()?.Log($"Board's input settings were already set to <{newPieceSet.PieceSetName}>; syncing the piece system.");
             
             SetPieceSet(newPieceSet);
             
@@ -80,7 +81,7 @@ public class PieceSystem : IPieceSystem, ITickable
         // our piece set and confirm the change with the PieceSetChanged event. This way, Board is always the source of
         // truth for what the current settings are, and we only change our piece set in response to that, which keeps
         // everything nicely in sync.
-        _logger.Notice()?.Log($"Asking Board to set input settings to <{newPieceSet.PieceSetName}>.");
+        _logger.Info()?.Log($"Asking Board to set input settings to <{newPieceSet.PieceSetName}>.");
         
         BoardInput.settings = newPieceSet.InputSettings;
     }
@@ -94,7 +95,7 @@ public class PieceSystem : IPieceSystem, ITickable
     }
 
     /// <inheritdoc />
-    public bool TryGetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition, out IVirtualPiece[] pieces)
+    public bool TryGetPiecesOnBoard(IPieceBehaviorDefinition pieceBehaviorDefinition, out IVirtualPiece[] pieces)
     {
         pieces = GetPiecesOnBoard(pieceBehaviorDefinition);
 
@@ -119,7 +120,7 @@ public class PieceSystem : IPieceSystem, ITickable
             .Select(context => context.VirtualPiece).ToArray();
     }
 
-    protected IVirtualPiece[] GetPiecesOnBoard(PieceBehaviorDefinition pieceBehaviorDefinition)
+    protected IVirtualPiece[] GetPiecesOnBoard(IPieceBehaviorDefinition pieceBehaviorDefinition)
     {
         return _pieceTrackingContextMap.Values
             .Where(context => pieceBehaviorDefinition.GlyphIDs.Contains(context.GlyphID) && context.HasSettled)
@@ -191,7 +192,7 @@ public class PieceSystem : IPieceSystem, ITickable
 
             bool isKnownPieceName = ActivePieceSetDefinition.GlyphIDMapping.TryGetValue(trackingKey.glyphID, out string pieceName);
             string virtualPieceName = $"{(isKnownPieceName ? pieceName : "PieceNameUnknown")} {trackingKey}";
-            _logger.Notice()?.Log($"Board contact <{trackingKey}> has settled after <{trackingContext.NumFramesActive}> frames. Placing piece <{virtualPieceName}>.");
+            _logger.Info()?.Log($"Board contact <{trackingKey}> has settled after <{trackingContext.NumFramesActive}> frames. Placing piece <{virtualPieceName}>.");
             
             GameObject instance = _instantiator.CreateEmptyGameObject(virtualPieceName);
             VirtualPiece piece = instance.AddComponent<VirtualPiece>();
@@ -200,6 +201,10 @@ public class PieceSystem : IPieceSystem, ITickable
             trackingContext.VirtualPiece = piece;
 
             _pieceBehaviorSystem.Place(trackingContext);
+            PiecePlaced?.Invoke(this, new PieceEvent
+            {
+                VirtualPiece = trackingContext.VirtualPiece
+            });
         }
         
         _logger.Trace()?.Log($"Processing piece behaviors for <{trackingKey}> in phase <{contact.phase}>.");
@@ -210,9 +215,14 @@ public class PieceSystem : IPieceSystem, ITickable
         {
             _pieceBehaviorSystem.PickUp(trackingContext);
             _pieceTrackingContextMap.Remove(trackingKey);
+            PiecePickedUp?.Invoke(this, new PieceEvent
+            {
+                VirtualPiece = trackingContext.VirtualPiece
+            });
+            // TODO: Use object pooling for the virtual pieces instead of destroying them.
             Object.Destroy(trackingContext.VirtualPiece.AnchorTransform.gameObject);
             
-            _logger.Notice()?.Log($"Board contact <{trackingKey}> has ended with phase <{contact.phase}>. Ending contact tracking.");
+            _logger.Info()?.Log($"Board contact <{trackingKey}> has ended with phase <{contact.phase}>. Ending contact tracking.");
         }
         
         ++trackingContext.NumFramesActive;
@@ -238,7 +248,10 @@ public class PieceSystem : IPieceSystem, ITickable
         
         _logger.Trace()?.Log("Notifying observers of piece set change.");
         
-        PieceSetChanged?.Invoke(ActivePieceSetDefinition);
+        PieceSetChanged?.Invoke(this, new PieceSetDefinitionEvent
+        {
+            Definition = ActivePieceSetDefinition
+        });
     }
 
     private void SetPieceSet(IPieceSetDefinition newPieceSet)
@@ -252,7 +265,7 @@ public class PieceSystem : IPieceSystem, ITickable
         
         if(ActivePieceSetDefinition != null)
         {
-            _logger.Notice()?.Log($"Cleaning up piece set <{ActivePieceSetDefinition.PieceSetName}>.");
+            _logger.Info()?.Log($"Cleaning up piece set <{ActivePieceSetDefinition.PieceSetName}>.");
 
             // Need to clean up any residual tracking contexts because Board does not guarantee that all contacts will
             // end cleanly, and we don't want pieces lingering around after a piece set change.
@@ -280,7 +293,7 @@ public class PieceSystem : IPieceSystem, ITickable
             _virtualPieceContainer = _instantiator.CreateEmptyGameObject(newPieceSet.PieceSetName).transform;
         }
         
-        _logger.Notice()?.Log($"Piece set changed to <{ActivePieceSetDefinition?.PieceSetName}>.");
+        _logger.Info()?.Log($"Piece set changed to <{ActivePieceSetDefinition?.PieceSetName}>.");
     }
 }
 }

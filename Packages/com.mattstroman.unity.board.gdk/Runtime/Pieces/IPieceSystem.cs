@@ -3,6 +3,7 @@
 using Board.Input;
 
 using BoardGDK.Pieces.Behaviors;
+using BoardGDK.Pieces.Events;
 
 using JetBrains.Annotations;
 
@@ -22,7 +23,17 @@ public interface IPieceSystem
     /// <summary>
     /// Notification event invoked when the active Piece set has changed.
     /// </summary>
-    public event Action<IPieceSetDefinition> PieceSetChanged;
+    public event EventHandler<IPieceSetDefinitionEvent> PieceSetChanged;
+    
+    /// <summary>
+    /// Event raised when an <see cref="IVirtualPiece"/> is placed on Board.
+    /// </summary>
+    public event EventHandler<IPieceEvent> PiecePlaced;
+    
+    /// <summary>
+    /// Event raised when an <see cref="IVirtualPiece"/> is picked up from Board.
+    /// </summary>
+    public event EventHandler<IPieceEvent> PiecePickedUp; 
     
     /// <summary>
     /// Change the active Piece set.
@@ -51,9 +62,9 @@ public interface IPieceSystem
     /// <summary>
     /// Determine if there are any Pieces matching the specified <paramref name="pieceBehaviorDefinition"/> on Board, and retrieve them.
     /// </summary>
-    /// <param name="pieceBehaviorDefinition">The <see cref="PieceBehaviorDefinition"/> to match against.</param>
-    /// <param name="pieces">The set of matching <see cref="VirtualPiece"/>s, if there are any; empty array otherwise.</param>
+    /// <param name="pieceBehaviorDefinition">The <see cref="IPieceBehaviorDefinition"/> to match against.</param>
+    /// <param name="pieces">The set of matching <see cref="IVirtualPiece"/>s, if there are any; empty array otherwise.</param>
     /// <returns>True if there is at least one Piece matching the <paramref name="pieceBehaviorDefinition"/> on Board; false otherwise.</returns>
-    public bool TryGetPiecesOnBoard([NotNull] PieceBehaviorDefinition pieceBehaviorDefinition, [NotNull] out IVirtualPiece[] pieces);
+    public bool TryGetPiecesOnBoard([NotNull] IPieceBehaviorDefinition pieceBehaviorDefinition, [NotNull] out IVirtualPiece[] pieces);
 }
 }

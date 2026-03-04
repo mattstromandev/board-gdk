@@ -8,6 +8,8 @@ using UnityEngine;
 
 using Zenject;
 
+using Object = UnityEngine.Object;
+
 namespace BoardGDK.Pieces.Behaviors
 {
 /// <summary>
@@ -44,7 +46,7 @@ public class Spawn : PieceBehavior
     [SerializeField]
     private PieceBehaviorLifecycleMask m_spawnOn = PieceBehaviorLifecycleMask.Activate;
 
-    private IInstantiator _instantiator;
+    private DiContainer _container;
     private IRahmenLogger _logger;
     private const string _lastSpawnTimeKey = "LastSpawnTime";
 
@@ -90,10 +92,10 @@ public class Spawn : PieceBehavior
     }
 
     [Inject]
-    private void Injection([NotNull] IInstantiator instantiator, [NotNull] ILoggerFactory loggerFactory)
+    private void Injection([NotNull] DiContainer container, [NotNull] ILoggerFactory loggerFactory)
     {
         _logger = loggerFactory.Get<LogChannels.PieceBehaviorSystem>(this);
-        _instantiator = instantiator;
+        _container = container;
     }
 
     private void Instantiate(PieceBehaviorContext context)
@@ -120,7 +122,15 @@ public class Spawn : PieceBehavior
             }
             
             _logger.Debug()?.Log($"Spawning prefab <{prefab.name}> at world position <{worldPosition}>.");
-            _instantiator.InstantiatePrefab(prefab, worldPosition, context.VirtualPiece.AnchorTransform.rotation, null);
+            GameObject instance = Object.Instantiate(
+                prefab, worldPosition, context.VirtualPiece.AnchorTransform.rotation, null
+            );
+
+            foreach(SpawnedBehavior spawnedBehavior in instance.GetComponentsInChildren<SpawnedBehavior>(true))
+            {
+                _container.Inject(spawnedBehavior, new []{ context.VirtualPiece} );
+            }
+            _container.Inject(instance);
         }
     }
 }

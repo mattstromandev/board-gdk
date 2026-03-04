@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Board.Input;
+
+using BoardGDK.Pieces.Events;
 
 using UnityEngine;
 
@@ -43,6 +46,12 @@ public interface IVirtualPiece
     /// These object will all be direct children of the <see cref="AnchorTransform"/>.
     /// </remarks>
     public IReadOnlyCollection<GameObject> DigitalPieces { get; }
+
+    /// <summary>
+    /// Convenience event for when the piece is picked up.
+    /// </summary>
+    /// <seealso cref="IPieceSystem.PiecePickedUp"/>
+    public event EventHandler<IPieceEvent> PickedUp; 
     
     /// <summary>
     /// Add a <see cref="DigitalPieces"/>.
@@ -50,7 +59,7 @@ public interface IVirtualPiece
     /// <param name="digitalPiece">The <see cref="GameObject"/> to add as a digital piece.</param>
     public void AddDigitalPiece(GameObject digitalPiece);
     
-    /// <summary>
+    /// <summary>p
     /// Remove a <see cref="DigitalPieces"/>, if it is added.
     /// </summary>
     /// <param name="digitalPiece">The <see cref="GameObject"/> to remove from the digital pieces.</param>

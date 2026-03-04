@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Board.Input;
 
 using BoardGDK.BoardAdapters;
+using BoardGDK.Pieces.Behaviors;
+using BoardGDK.Pieces.Events;
 
 using UnityEngine;
+
+using Zenject;
 
 namespace BoardGDK.Pieces
 {
@@ -30,6 +35,9 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     private List<GameObject> m_digitalPieces = new();
 
     private BoardContact _nonSerializedBoardContact;
+    private PieceBehaviorSettings _pieceBehaviorSettings;
+    private IPieceSystem _pieceSystem;
+    private readonly Dictionary<EventHandler<IPieceEvent>, EventHandler<IPieceEvent>> _pickedUpEventWrappers = new();
 
     /// <inheritdoc/>
     public BoardContact BoardContact
@@ -38,7 +46,7 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
         internal set 
         {
         #if UNITY_EDITOR
-            m_boardContact = value;
+            m_boardContact = new SerializableBoardContact(value);
         #endif
             
             _nonSerializedBoardContact = value;
@@ -52,6 +60,30 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     public IReadOnlyCollection<GameObject> DigitalPieces => m_digitalPieces;
 
     /// <inheritdoc/>
+    public event EventHandler<IPieceEvent> PickedUp
+    {
+        add
+        {
+            if(_pickedUpEventWrappers.TryGetValue(value, out EventHandler<IPieceEvent> wrapper)) { return; }
+
+            wrapper = (sender, args) =>
+            {
+                if(ReferenceEquals(args.VirtualPiece, this) == false) { return; }
+                value(sender, args);
+            };
+            _pickedUpEventWrappers.Add(value, wrapper);
+            _pieceSystem.PiecePickedUp += wrapper;
+        }
+        remove
+        {
+            if(_pickedUpEventWrappers.Remove(value, out EventHandler<IPieceEvent> wrapper))
+            {
+                _pieceSystem.PiecePickedUp -= wrapper;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
     void IVirtualPiece.AddDigitalPiece(GameObject digitalPiece)
     {
         m_digitalPieces.Add(digitalPiece);
@@ -61,6 +93,16 @@ public class VirtualPiece : MonoBehaviour, IVirtualPiece
     public void RemoveDigitalPiece(GameObject digitalPiece)
     {
         m_digitalPieces.Remove(digitalPiece);
+    }
+
+    [Inject]
+    private void Injection(IPieceBehaviorSettings pieceBehaviorSettings, IPieceSystem pieceSystem)
+    {
+        if(pieceBehaviorSettings is PieceBehaviorSettings castPieceBehaviorSettings)
+        {
+            _pieceBehaviorSettings = castPieceBehaviorSettings;
+        }
+        _pieceSystem = pieceSystem;
     }
 }
 }

@@ -16,6 +16,7 @@ public class SyncPosition : PieceBehavior
 {
     [Tooltip("The axis treated as world up when determining the movement plane.")]
     [SerializeField]
+    // TODO: Change to tie into the PieceBehaviorSettings (either global or for this behavior)
     private Vector3 m_worldUpAxis = Vector3.up;
     
     [Tooltip("An offset, in screen space, to apply to the position.")]

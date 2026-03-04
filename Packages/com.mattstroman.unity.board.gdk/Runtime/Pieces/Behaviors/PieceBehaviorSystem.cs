@@ -134,7 +134,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             
         _behaviorContextMap.Add((trackingContext.TrackingKey, behavior), behaviorContext);
         
-        _logger.Notice()?.Log($"Placing piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
+        _logger.Info()?.Log($"Placing piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
         
         behavior.Place(behaviorContext);
     }
@@ -158,7 +158,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             
             _behaviorContextMap.Add((trackingContext.TrackingKey, behavior), behaviorContext);
             
-            _logger.Notice()?.Log($"Placing piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
+            _logger.Info()?.Log($"Placing piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
         
             behavior.Place(behaviorContext);
         #else
@@ -171,7 +171,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
         
         if(EvaluateGlobalConditions(behaviorDefinition, behaviorContext) == false && behavior.OverrideGlobalConditions == false)
         {
-            _logger.Notice()?.Log($"Global conditions no longer met for behavior <{behavior.GetType().Name}> and <{behaviorContext.TrackingKey}>. Deactivating behavior.");
+            _logger.Info()?.Log($"Global conditions no longer met for behavior <{behavior.GetType().Name}> and <{behaviorContext.TrackingKey}>. Deactivating behavior.");
             behavior.Deactivate(behaviorContext);
             behaviorContext.IsActive = false;
 
@@ -180,7 +180,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
 
         if(behavior.EvaluateConditions(behaviorContext) == false)
         {
-            _logger.Notice()?.Log($"Local conditions no longer met for behavior <{behavior.GetType().Name}> and <{behaviorContext.TrackingKey}>. Deactivating behavior.");
+            _logger.Info()?.Log($"Local conditions no longer met for behavior <{behavior.GetType().Name}> and <{behaviorContext.TrackingKey}>. Deactivating behavior.");
             behavior.Deactivate(behaviorContext);
             behaviorContext.IsActive = false;
 
@@ -220,7 +220,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             }
             
             // Behavior has settled and can now be activated
-            _logger.Notice()?.Log($"Piece behavior <{behavior.GetType().Name}> has settled for <{trackingContext.TrackingKey}> after <{behaviorContext.NumFramesActive}> frames. Activating behavior.");
+            _logger.Info()?.Log($"Piece behavior <{behavior.GetType().Name}> has settled for <{trackingContext.TrackingKey}> after <{behaviorContext.NumFramesActive}> frames. Activating behavior.");
             
             behaviorContext.IsActive = true;
             behavior.Activate(behaviorContext);
@@ -246,7 +246,7 @@ public class PieceBehaviorSystem : IPieceBehaviorSystem
             return;
         }
         
-        _logger.Notice()?.Log($"Picking up piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
+        _logger.Info()?.Log($"Picking up piece behavior <{behavior.GetType().Name}> for <{trackingContext.TrackingKey}>.");
 
         behaviorContext.TrackingContext = trackingContext;
         behavior.PickUp(behaviorContext);

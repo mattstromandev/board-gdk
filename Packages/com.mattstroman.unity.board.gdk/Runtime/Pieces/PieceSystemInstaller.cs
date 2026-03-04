@@ -6,7 +6,9 @@ using Board.Input;
 
 using BoardGDK.Pieces.Behaviors;
 using BoardGDK.Pieces.Behaviors.Conditions;
+using BoardGDK.Pieces.Events;
 
+using Rahmen.Events;
 using Rahmen.Logging;
 
 using UnityEngine;
@@ -51,6 +53,13 @@ public class PieceSystemInstaller : ScriptableObjectInstaller<PieceSystemInstall
                 $"{nameof(PieceSystemInstaller)}: No binding for {nameof(ILoggerFactory)} was found in the container when installing <{name}>. Please check your dependencies and make sure you have {nameof(Rahmen)} included and properly set up, and that an {nameof(ILoggerFactory)} is properly bound before this installer."
             );
         }
+        
+        if(Container.HasBinding<IEventSystem>() == false)
+        {
+            throw new ZenjectException(
+                $"{nameof(PieceSystemInstaller)}: No binding for {nameof(IEventSystem)} was found in the container when installing <{name}>. Please check your dependencies and make sure you have {nameof(Rahmen)} {nameof(Rahmen.Events)} included and properly set up, and that an {nameof(IEventSystem)} is properly bound before this installer."
+            );
+        }
 
         if(m_pieceSetDefinitions.Length == 0)
         {
@@ -70,6 +79,7 @@ public class PieceSystemInstaller : ScriptableObjectInstaller<PieceSystemInstall
         );
         Container.BindInterfacesAndSelfTo<PieceSystem>().AsSingle()
             .WithArguments(m_pieceSetDefinitions, m_pieceSettlingStrategies).NonLazy();
+        Container.Bind<RahmenEventsAdapter>().AsSingle().NonLazy();
         
         // TODO: change iteration here to also be validation for any null entries that will log messages which can ping
         // the location of where the issue lies.
