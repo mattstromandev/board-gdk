@@ -72,6 +72,20 @@ public static class IBoardContactExtensions
 
         return MemoryMarshal.Cast<BoardContactData, BoardContact>(MemoryMarshal.CreateSpan(ref data, 1))[0];
     }
+
+    /// <summary>
+    /// Convert this <see cref="BoardContact"/> to an <see cref="IBoardContact"/>.
+    /// </summary>
+    /// <remarks>
+    /// <b>Warning:</b> This method has GC allocation and boxing costs, so it should be used with caution in
+    /// performance-sensitive contexts. Consider using other helper methods and extensions for <see cref="BoardContact"/>
+    /// in hot paths.
+    /// </remarks>
+    /// <returns>An <see cref="IBoardContact"/> with the values from this <see cref="BoardContact"/>.</returns>
+    public static IBoardContact AsIBoardContact(this BoardContact me)
+    {
+        return new SerializableBoardContact(me);
+    }
     
     /// <inheritdoc cref="BoardContactExtensions.GetWorldPosition(BoardContact)"/>
     public static Vector3 GetWorldPosition(this IBoardContact me)

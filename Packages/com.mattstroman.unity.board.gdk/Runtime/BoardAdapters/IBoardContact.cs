@@ -1,4 +1,8 @@
-﻿using Board.Input;
+﻿using System;
+
+using Board.Input;
+
+using Rahmen.Extensions;
 
 using UnityEngine;
 
@@ -25,8 +29,18 @@ public interface IBoardContact
     /// <inheritdoc cref="BoardContact.orientation"/>
     public float Orientation { get; }
 
+    /// <summary>
+    /// The <see cref="Orientation"/> in degrees.
+    /// </summary>
+    public float OrientationDegrees => Orientation.ToDegrees();
+
     /// <inheritdoc cref="BoardContact.previousOrientation"/>
     public float PreviousOrientation { get; }
+
+    /// <summary>
+    /// The <see cref="PreviousOrientation"/> in degrees.
+    /// </summary>
+    public float PreviousOrientationDegrees => PreviousOrientation.ToDegrees();
 
     /// <inheritdoc cref="BoardContact.timestamp"/>
     public double Timestamp { get; }

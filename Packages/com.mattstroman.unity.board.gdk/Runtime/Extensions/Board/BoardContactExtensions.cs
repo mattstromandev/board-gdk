@@ -2,7 +2,7 @@
 
 using Board.Input;
 
-using BoardGDK.Extensions.Unity;
+using Rahmen.Extensions;
 
 using UnityEngine;
 
@@ -19,7 +19,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me)
     {
-        return me.GetWorldPosition(Camera.main);
+        return me.screenPosition.GetWorldPosition();
     }
     
     /// <summary>
@@ -29,7 +29,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact at the referenced Z world position.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Vector3 worldUpAxis)
     {
-        return me.GetWorldPosition(Camera.main, worldUpAxis);
+        return me.screenPosition.GetWorldPosition(worldUpAxis);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public static class BoardContactExtensions
     /// </returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Vector3 worldUpAxis, LayerMask surfaceLayers)
     {
-        return me.GetWorldPosition(Camera.main, worldUpAxis, surfaceLayers);
+        return me.screenPosition.GetWorldPosition(worldUpAxis, surfaceLayers);
     }
     
     /// <summary>
@@ -74,7 +74,7 @@ public static class BoardContactExtensions
     /// </returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Vector3 worldUpAxis, LayerMask surfaceLayers, Vector3 referenceWorldPosition)
     {
-        return me.GetWorldPosition(Camera.main, worldUpAxis, surfaceLayers, referenceWorldPosition);
+        return me.screenPosition.GetWorldPosition(worldUpAxis, surfaceLayers, referenceWorldPosition);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact from the perspective of the given camera.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera)
     {
-        return camera.ScreenToWorldPoint(new Vector3(me.screenPosition.x, me.screenPosition.y, camera.nearClipPlane));
+        return me.screenPosition.GetWorldPosition(camera);
     }
 
     /// <summary>
@@ -95,10 +95,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact from the perspective of the given camera.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis)
     {
-        // Use the center screen point plane at the camera's near clip plane distance as the world point of reference
-        Vector3 centerWorldPoint = camera.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, camera.nearClipPlane));
-        
-        return me.GetWorldPosition(camera, worldUpAxis, centerWorldPoint);
+        return me.screenPosition.GetWorldPosition(camera, worldUpAxis);
     }
 
     /// <summary>
@@ -110,15 +107,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact from the perspective of the given camera and <paramref name="referenceWorldPosition"/>.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis, Vector3 referenceWorldPosition)
     {
-        Vector3 screenPosition = me.screenPosition;
-        Ray screenRay = camera.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
-        
-        Vector3 resolvedWorldUpAxis = worldUpAxis.ResolveWorldUp();
-        Plane movementPlane = new(resolvedWorldUpAxis, referenceWorldPosition);
-
-        if(movementPlane.Raycast(screenRay, out float enter) == false) { return Vector3.zero; }
-
-        return screenRay.GetPoint(enter);
+        return me.screenPosition.GetWorldPosition(camera, worldUpAxis, referenceWorldPosition);
     }
 
     /// <summary>
@@ -131,15 +120,7 @@ public static class BoardContactExtensions
     /// <returns>The world position of this contact from the perspective of the given camera and <paramref name="referenceWorldPosition"/>.</returns>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis, Vector2 screenSpaceOffset, Vector3 referenceWorldPosition)
     {
-        Vector3 screenPosition = me.screenPosition + screenSpaceOffset;
-        Ray screenRay = camera.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
-        
-        Vector3 resolvedWorldUpAxis = worldUpAxis.ResolveWorldUp();
-        Plane movementPlane = new(resolvedWorldUpAxis, referenceWorldPosition);
-
-        if(movementPlane.Raycast(screenRay, out float enter) == false) { return Vector3.zero; }
-
-        return screenRay.GetPoint(enter);
+        return me.screenPosition.GetWorldPosition(camera, worldUpAxis, screenSpaceOffset, referenceWorldPosition);
     }
 
     /// <summary>
@@ -163,10 +144,7 @@ public static class BoardContactExtensions
     /// <exception cref="ArgumentNullException"><paramref name="camera"/> is null.</exception>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis, LayerMask surfaceLayers)
     {
-        // Use the center screen point plane at the camera's near clip plane distance as the world point of reference
-        Vector3 centerWorldPoint = camera.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, camera.nearClipPlane));
-        
-        return me.GetWorldPosition(camera, worldUpAxis, surfaceLayers, centerWorldPoint);
+        return me.screenPosition.GetWorldPosition(camera, worldUpAxis, surfaceLayers);
     }
 
     /// <summary>
@@ -191,24 +169,7 @@ public static class BoardContactExtensions
     /// <exception cref="ArgumentNullException"><paramref name="camera"/> is null.</exception>
     public static Vector3 GetWorldPosition(this BoardContact me, Camera camera, Vector3 worldUpAxis, LayerMask surfaceLayers, Vector3 referenceWorldPosition)
     {
-        if(camera == null)
-        {
-            throw new ArgumentNullException(nameof(camera));
-        }
-        
-        Vector3 screenPosition = me.screenPosition;
-        Ray screenRay = camera.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0f));
-
-        float raycastDistance = camera.farClipPlane;
-        if(raycastDistance <= 0f) { raycastDistance = Mathf.Infinity; }
-
-        if(Physics.Raycast(screenRay, out RaycastHit hit, raycastDistance, surfaceLayers))
-        {
-            return hit.point;
-        }
-
-        // Fall back to the non-physics approach
-        return me.GetWorldPosition(camera, worldUpAxis, referenceWorldPosition);
+        return me.screenPosition.GetWorldPosition(camera, worldUpAxis, surfaceLayers, referenceWorldPosition);
     }
 }
 }

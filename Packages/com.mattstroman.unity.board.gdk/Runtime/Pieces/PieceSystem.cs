@@ -194,8 +194,7 @@ public class PieceSystem : IPieceSystem, ITickable
             string virtualPieceName = $"{(isKnownPieceName ? pieceName : "PieceNameUnknown")} {trackingKey}";
             _logger.Info()?.Log($"Board contact <{trackingKey}> has settled after <{trackingContext.NumFramesActive}> frames. Placing piece <{virtualPieceName}>.");
             
-            GameObject instance = _instantiator.CreateEmptyGameObject(virtualPieceName);
-            VirtualPiece piece = instance.AddComponent<VirtualPiece>();
+            VirtualPiece piece = _instantiator.InstantiateComponentOnNewGameObject<VirtualPiece>(virtualPieceName);
             piece.transform.SetParent(_virtualPieceContainer);
             piece.BoardContact = trackingContext.Contact;
             trackingContext.VirtualPiece = piece;
