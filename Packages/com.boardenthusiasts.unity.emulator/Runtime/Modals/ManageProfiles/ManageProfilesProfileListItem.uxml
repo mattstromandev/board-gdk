@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/ManageProfiles/ManageProfilesProfileListItem.uss?fileID=7433441132597879392&amp;guid=1e56eb1840ee428d84b84a0d5b5cc4d9&amp;type=3#ManageProfilesProfileListItem"/>
+    <ui:VisualElement data-source-type="BE.Emulator.Modals.ManageProfiles.ManageProfilesProfileItemViewModel, BE.Emulator" class="manage-profiles-profile-item">
+        <ui:VisualElement class="manage-profiles-profile-item__avatar">
+            <Bindings>
+                <ui:DataBinding property="style.backgroundColor" data-source-path="AvatarBackgroundColor" binding-mode="ToTarget"/>
+                <ui:DataBinding property="style.backgroundImage" data-source-path="AvatarImage" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:VisualElement>
+        <ui:Label text="Profile" class="manage-profiles-profile-item__display-name">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="DisplayName" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:Label>
+        <ui:VisualElement class="manage-profiles-profile-item__chevron"/>
+    </ui:VisualElement>
+</ui:UXML>

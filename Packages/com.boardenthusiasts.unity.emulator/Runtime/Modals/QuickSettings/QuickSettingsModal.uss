@@ -1,0 +1,123 @@
+:root {
+    --color_button-background: rgb(203, 201, 178);
+    --color_modal-background: rgb(170, 165, 150);
+    --color_quick-settings-icon-image-tint: rgb(0, 0, 0);
+    --color_separator: rgb(189, 188, 173);
+}
+
+.quick-settings-modal {
+    display: none;
+    background-color: var(--color_modal-background);
+    border-top-left-radius: 46px;
+    border-top-right-radius: 46px;
+    border-bottom-right-radius: 46px;
+    border-bottom-left-radius: 46px;
+    flex-shrink: 0;
+    width: 618px;
+    height: 362px;
+    padding-top: 32px;
+    padding-right: 32px;
+    padding-bottom: 32px;
+    padding-left: 32px;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 1;
+}
+
+.quick-settings-modal.--open {
+    display: flex;
+}
+
+.quick-settings-modal .board-os__button {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-bottom-right-radius: 32px;
+    border-bottom-left-radius: 32px;
+}
+
+.quick-settings-modal__power-group {
+    flex-direction: row;
+    height: 152px;
+    flex-shrink: 0;
+    justify-content: space-between;
+}
+
+.quick-settings-modal__power-group .board-os__button {
+    flex-basis: 48.5%;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    background-size: 12% 23%;
+    background-position-x: center;
+    background-position-y: top 35px;
+    background-color: var(--color_button-background);
+}
+
+.quick-settings-modal__power-group .board-os__button > Label {
+    top: 25px;
+}
+
+.quick-settings-modal__separator {
+    border-top-width: 2px;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    height: 1px;
+    width: 90%;
+    align-self: center;
+    border-color: var(--color_separator);
+}
+
+.quick-settings-modal__icon-group {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 98px;
+    background-color: var(--color_button-background);
+    border-top-left-radius: 34px;
+    border-top-right-radius: 34px;
+    border-bottom-right-radius: 34px;
+    border-bottom-left-radius: 34px;
+    padding-top: 14px;
+    padding-right: 50px;
+    padding-bottom: 14px;
+    padding-left: 50px;
+}
+
+.quick-settings-modal__icon-group .board-os__button {
+    -unity-background-image-tint-color: var(--color_quick-settings-icon-image-tint);
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    background-size: 55% 55%;
+}
+
+.quick-settings-modal .board-os__button#wifi {
+    background-image: url("../../../Textures/wifi.svg");
+}
+
+.quick-settings-modal .board-os__button#display {
+    background-image: url("../../../Textures/display.svg");
+}
+
+.quick-settings-modal .board-os__button#audio {
+    background-image: url("../../../Textures/audio.svg");
+}
+
+.quick-settings-modal .board-os__button#settings {
+    background-image: url("../../../Textures/settings.svg");
+}
+
+.quick-settings-modal .board-os__button#power {
+    background-image: url("../../../Textures/power.svg");
+    -unity-background-image-tint-color: rgb(252, 65, 48);
+}
+
+.quick-settings-modal .board-os__button#sleep {
+    background-image: url("../../../Textures/sleep.svg");
+    -unity-background-image-tint-color: rgb(88, 105, 224);
+}

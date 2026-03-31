@@ -1,0 +1,22 @@
+{
+    "name": "BE.Emulator.Tests",
+    "rootNamespace": "BE.Emulator.Tests",
+    "references": [
+        "BE.Emulator",
+        "Board",
+        "Zenject",
+        "Rahmen"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

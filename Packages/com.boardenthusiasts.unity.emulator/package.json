@@ -1,0 +1,24 @@
+{
+  "name": "com.boardenthusiasts.unity.emulator",
+  "displayName": "BE Emulator for Board",
+  "description": "An emulation layer for the Board OS and Board SDK wrapper services for Unity editor workflows For example: mock Board application, session, and save-game state.",
+  "version": "0.0.1",
+  "unity": "6.3",
+  "dependencies": {
+    "com.svermeulen.extenject": "9.2.0",
+    "fun.board": "3.2.1",
+    "com.mattstroman.unity.rahmen": "1.0.0"
+  },
+  "keywords": [
+    "board enthusiasts",
+    "board",
+    "emulator",
+    "board sdk",
+    "emulation",
+    "mocking"
+  ],
+  "author": {
+    "name": "Matt Stroman",
+    "email": "support+emulator@boardenthusiasts.com"
+  }
+}

@@ -1,0 +1,29 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Emulator.uss?fileID=7433441132597879392&amp;guid=5debb926fd156ef49a0c7edcf8ef769f&amp;type=3#Emulator"/>
+    <ui:VisualElement picking-mode="Ignore" data-source-type="BE.Emulator.EmulatorViewModel, BE.Emulator" class="board-os">
+        <ui:VisualElement name="main" picking-mode="Ignore" class="board-os__content-frame">
+            <ui:VisualElement class="board-os__header">
+                <ui:VisualElement name="switch-profile" class="board-os__button">
+                    <ui:VisualElement name="avatar">
+                        <Bindings>
+                            <ui:DataBinding property="style.backgroundColor" data-source-path="AvatarBackgroundColor" binding-mode="ToTarget"/>
+                            <ui:DataBinding property="style.backgroundImage" data-source-path="AvatarImage" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:VisualElement>
+                    <ui:Label name="username">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="Username" binding-mode="ToTarget"/>
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement name="" class="board-os__safe-space"/>
+                <ui:VisualElement class="board-os__header__settings-placeholder"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Button name="open-settings" class="board-os__button"/>
+        <ui:VisualElement name="screens" picking-mode="Ignore" class="board-os__screen-frame"/>
+        <ui:VisualElement name="modals" class="board-os__screen-frame">
+            <ui:VisualElement name="modals-content" picking-mode="Ignore" class="board-os__modal-content-frame"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

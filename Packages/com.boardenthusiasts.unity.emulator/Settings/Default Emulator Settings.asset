@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d8da4246c840d1b62f3424ee624e8c, type: 3}
+  m_Name: Default Emulator Settings
+  m_EditorClassIdentifier: BE.Emulator::BE.Emulator.EmulatorSettings
+  <PanelSettings>k__BackingField: {fileID: 11400000, guid: d1f874a02337d004abfa49e740ca1382, type: 2}
+  <SortOrder>k__BackingField: 0
+  <SourceTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 80b86e7319da51e4d94a7e7d7fd41f4d, type: 3}
+  <ProfileSwitcherTemplate>k__BackingField: {fileID: 9197481963319205126, guid: bff7fd7a643f75645af3e8ddc3e11ad9, type: 3}
+  <ProfileSwitcherProfileCardTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 1f0dbb4ed0904f80bde67a6ad6a7b8d1, type: 3}
+  <QuickSettingsModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 6be3ba34d6214e0e935540f4e355fe40, type: 3}
+  <ManageProfilesModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 66d76d79dc5f4a86b306dcafb9f53595, type: 3}
+  <ProfileSettingsModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 528c9bdbc339440e9ea9c217bd382904, type: 3}
+  <EditProfileModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 458c2d707b1144cc9a55e56c1c5fb423, type: 3}
+  <DeleteProfileModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: e998697739ea45acb9dbb011877d6de1, type: 3}
+  <AddPlayerModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 7ecffb61c2a34512a9c2e6082c54f93c, type: 3}
+  <ReplacePlayerModalTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 1442537a341b4dddbdb1483a248aced9, type: 3}
+  <AddPlayerCardTemplate>k__BackingField: {fileID: 9197481963319205126, guid: e6c9f8f9dfe847749900d5962b440973, type: 3}
+  <ManageProfilesProfileItemTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 4c6040ca01fa4ffca571ccfd3d63067f, type: 3}

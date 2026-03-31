@@ -1,0 +1,22 @@
+{
+    "name": "BE.Emulator.Editor.Tests",
+    "rootNamespace": "BE.Emulator.Editor.Tests",
+    "references": [
+        "BE.Emulator.Editor",
+        "BE.Emulator"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

@@ -1,0 +1,14 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="ManageProfilesProfileListItem" src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/ManageProfiles/ManageProfilesProfileListItem.uxml?fileID=9197481963319205126&amp;guid=4c6040ca01fa4ffca571ccfd3d63067f&amp;type=3#ManageProfilesProfileListItem"/>
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/ManageProfiles/ManageProfilesModal.uss?fileID=7433441132597879392&amp;guid=18a62b4a8e03440ebf231e3dbdb4236c&amp;type=3#ManageProfilesModal"/>
+    <ui:VisualElement class="manage-profiles-modal">
+        <ui:VisualElement class="manage-profiles-modal__header">
+            <ui:VisualElement name="close-manage-profiles" class="board-os__button"/>
+            <ui:Label text="Profiles" class="manage-profiles-modal__title"/>
+            <ui:Button name="new-profile" text="+ New Profile" class="board-os__button manage-profiles-modal__new-profile"/>
+        </ui:VisualElement>
+        <ui:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" class="manage-profiles-modal__profiles">
+            <ui:Instance template="ManageProfilesProfileListItem" style="width: 100%;"/>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

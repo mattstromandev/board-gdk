@@ -1,0 +1,95 @@
+:root {
+    --color_manage-profiles-modal-background: rgb(222, 220, 193);
+    --color_manage-profiles-text: rgb(0, 0, 0);
+}
+
+.manage-profiles-modal {
+    display: none;
+    background-color: var(--color_manage-profiles-modal-background);
+    border-top-left-radius: 46px;
+    border-top-right-radius: 46px;
+    border-bottom-right-radius: 46px;
+    border-bottom-left-radius: 46px;
+    flex-shrink: 0;
+    width: 814px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 30px;
+    padding-right: 28px;
+    padding-left: 28px;
+}
+
+.manage-profiles-modal.--open {
+    display: flex;
+}
+
+.manage-profiles-modal__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    margin-bottom: 24px;
+    background-color: var(--color_manage-profiles-modal-background);
+    padding-top: 3px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+}
+
+.manage-profiles-modal__title {
+    color: var(--color_manage-profiles-text);
+    font-size: 47px;
+    -unity-font-style: bold;
+    flex-grow: 1;
+    margin-left: 14px;
+}
+
+.manage-profiles-modal .board-os__button#close-manage-profiles {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-image: url("../../../Textures/arrow-back.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-size: 80% 80%;
+}
+
+.manage-profiles-modal__new-profile {
+    flex-shrink: 0;
+    height: 88%;
+    padding-top: 0;
+    padding-right: 22px;
+    padding-bottom: 0;
+    padding-left: 22px;
+    background-color: rgb(255, 252, 221);
+    color: var(--color_manage-profiles-text);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    font-size: 24px;
+    aspect-ratio: 3.584716;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+    border-bottom-left-radius: 17px;
+}
+
+.manage-profiles-modal__profiles {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: 46px;
+    margin-left: 51px;
+}
+
+.manage-profiles-modal__profiles .unity-scroll-view__content-container {
+    padding-top: 0;
+    padding-right: 6px;
+    padding-bottom: 0;
+    padding-left: 0;
+}

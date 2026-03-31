@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/QuickSettings/QuickSettingsModal.uss?fileID=7433441132597879392&amp;guid=5b8cb5ea4a364792a50360f1e65d74c8&amp;type=3#QuickSettingsModal"/>
+    <ui:VisualElement class="quick-settings-modal">
+        <ui:VisualElement class="quick-settings-modal__power-group">
+            <ui:VisualElement name="power" class="board-os__button">
+                <ui:Label text="Power off"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="sleep" class="board-os__button">
+                <ui:Label text="Sleep"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="quick-settings-modal__separator"/>
+        <ui:VisualElement class="quick-settings-modal__icon-group">
+            <ui:VisualElement name="wifi" class="board-os__button"/>
+            <ui:VisualElement name="display" class="board-os__button"/>
+            <ui:VisualElement name="audio" class="board-os__button"/>
+            <ui:VisualElement name="settings" class="board-os__button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

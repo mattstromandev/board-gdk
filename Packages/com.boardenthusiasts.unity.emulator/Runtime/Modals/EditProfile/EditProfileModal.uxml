@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/EditProfile/EditProfileModal.uss?fileID=7433441132597879392&amp;guid=4dcb208ee5284ad4a4f7ff45b38183b0&amp;type=3#EditProfileModal"/>
+    <ui:VisualElement class="edit-profile-modal-root">
+        <ui:VisualElement name="dismiss-edit-profile" class="edit-profile-modal-root__backdrop"/>
+        <ui:VisualElement class="edit-profile-modal">
+            <ui:VisualElement name="close-edit-profile" class="board-os__button edit-profile-modal__close-button"/>
+            <ui:Label name="edit-profile-title" text="Add profile" class="edit-profile-modal__title"/>
+            <ui:VisualElement class="edit-profile-modal__avatar-block">
+                <ui:VisualElement name="edit-profile-avatar" class="edit-profile-modal__avatar"/>
+                <ui:Button name="shuffle-avatar-color" class="board-os__button edit-profile-modal__shuffle-button"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="edit-profile-modal__nickname-area">
+                <ui:TextField name="profile-nickname" class="edit-profile-modal__nickname-field"/>
+                <ui:Label name="profile-nickname-placeholder" text="Profile nickname" picking-mode="Ignore" class="edit-profile-modal__nickname-placeholder"/>
+            </ui:VisualElement>
+            <ui:Label name="profile-nickname-help" text="Profile name must be 2-14 characters, only letters and numbers." class="edit-profile-modal__nickname-help"/>
+            <ui:Button name="save-profile" text="Save" class="board-os__button edit-profile-modal__save-button"/>
+            <ui:VisualElement name="keyboard-host" class="edit-profile-modal__keyboard">
+                <ui:Label text="On-screen keyboard for visual parity only. Use your computer keyboard to type the profile name" style="position: absolute; top: 41%; left: 50%; background-color: rgba(205, 112, 112, 0.59); translate: -50% -89px; font-size: 16px; color: rgb(255, 255, 255); border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; padding-top: 10px; padding-right: 5px; padding-bottom: 10px; padding-left: 5px; -unity-font-style: bold;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

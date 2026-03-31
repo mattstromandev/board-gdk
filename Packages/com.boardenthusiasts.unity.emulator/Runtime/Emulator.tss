@@ -1,0 +1,45 @@
+@import url("unity-theme://default");
+
+:root {
+    --font-primary: url("project://database/Assets/Game/Shared/Fonts/GILSANUB.TTF?fileID=12800000&guid=661ac4afcebd58446b2d10ea9ce22ce7&type=3#GILSANUB");
+    --font-secondary: url("project://database/Assets/Game/Shared/Fonts/GILSANUB.TTF?fileID=12800000&guid=661ac4afcebd58446b2d10ea9ce22ce7&type=3#GILSANUB");
+    --font-tertiary: url("project://database/Assets/Game/Shared/Fonts/GILSANUB.TTF?fileID=12800000&guid=661ac4afcebd58446b2d10ea9ce22ce7&type=3#GILSANUB");
+
+    --text-size_title: 42px;
+    --text-size_subtitle: 34px;
+    --text-size_h1: 26px;
+    --text-size_h2: 18px;
+}
+
+/******************************
+* Fonts
+******************************/
+
+.font-primary {
+    -unity-font-definition: var(--font-primary);
+}
+
+.font-secondary {
+    -unity-font-definition: var(--font-secondary);
+}
+
+.font-tertiary {
+    -unity-font-definition: var(--font-tertiary);
+}
+
+.text-title {
+    font-size: var(--text-size_title);
+}
+
+.text-subtitle {
+    font-size: var(--text-size_subtitle);
+}
+
+.text-h1 {
+    font-size: var(--text-size_h1);
+}
+
+.text-h2 {
+    font-size: var(--text-size_h2);
+}
+

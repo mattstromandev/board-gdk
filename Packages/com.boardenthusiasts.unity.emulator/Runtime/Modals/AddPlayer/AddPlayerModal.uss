@@ -1,0 +1,103 @@
+:root {
+    --color_add-player-modal-background: rgb(224, 222, 195);
+    --color_add-player-modal-surface: rgb(234, 233, 203);
+    --color_add-player-modal-text: rgb(0, 0, 0);
+    --color_add-player-modal-backdrop: rgba(58, 53, 44, 0.22);
+}
+
+.add-player-modal-root {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+
+.add-player-modal-root.--open {
+    display: flex;
+}
+
+.add-player-modal-root__backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color_add-player-modal-backdrop);
+}
+
+.add-player-modal {
+    width: 917px;
+    padding-top: 28px;
+    padding-right: 40px;
+    padding-left: 40px;
+    background-color: var(--color_add-player-modal-background);
+    border-top-left-radius: 53px;
+    border-top-right-radius: 53px;
+    border-bottom-right-radius: 53px;
+    border-bottom-left-radius: 53px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.add-player-modal__header {
+    min-height: 79px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+.add-player-modal__back-button {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../../../Textures/arrow-back.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-size: 68% 68%;
+    background-position: center;
+}
+
+.add-player-modal__title {
+    margin-left: 9px;
+    color: var(--color_add-player-modal-text);
+    font-size: 49px;
+    -unity-font-style: bold;
+}
+
+.add-player-modal__divider {
+    height: 1px;
+    margin-top: 10px;
+    margin-right: 8px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.add-player-modal__section-title {
+    margin-top: 38px;
+    color: var(--color_add-player-modal-text);
+    font-size: 29px;
+    -unity-font-style: bold;
+}
+
+.add-player-modal__cards {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-top: 26px;
+    width: 867px;
+    margin-left: -13px;
+}
+
+.add-player-modal__cards .unity-scroll-view__content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    flex-grow: 1;
+}

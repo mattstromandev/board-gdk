@@ -1,0 +1,71 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/ProfileSettings/ProfileSettingsModal.uss?fileID=7433441132597879392&amp;guid=aabf503c240a4063b4605f3a58cdca83&amp;type=3#ProfileSettingsModal"/>
+    <ui:VisualElement class="profile-settings-modal-root --open">
+        <ui:VisualElement name="dismiss-profile-settings" class="profile-settings-modal-root__backdrop"/>
+        <ui:VisualElement class="profile-settings-modal">
+            <ui:Label text="Profile settings" class="profile-settings-modal__title"/>
+            <ui:VisualElement name="close-profile-settings" class="board-os__button profile-settings-modal__close-button"/>
+            <ui:VisualElement class="profile-settings-modal__summary">
+                <ui:VisualElement name="profile-settings-avatar" class="profile-settings-modal__avatar"/>
+                <ui:Label name="profile-settings-display-name" text="Profile" class="profile-settings-modal__display-name"/>
+                <ui:Button name="edit-profile" text="Edit profile" class="board-os__button profile-settings-modal__action-button"/>
+            </ui:VisualElement>
+            <ui:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" class="profile-settings-modal__content">
+                <ui:VisualElement class="profile-settings-modal__section">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Admin?" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Can edit profile settings and parental controls" class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="admin-toggle" class="profile-settings-modal__toggle">
+                        <ui:Label name="admin-toggle-text" text="Off" class="profile-settings-modal__toggle-text"/>
+                        <ui:VisualElement class="profile-settings-modal__toggle-knob"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="profile-settings-modal__section">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Profile PIN" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Limit access and allow profile to be used on other Boards" class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:Button name="set-pin-button" text="Set a PIN" class="board-os__button profile-settings-modal__action-button"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="profile-settings-modal__section">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Play time limits" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Set daily or weekly screen time allowance" class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="play-time-limits-toggle" class="profile-settings-modal__toggle">
+                        <ui:Label name="play-time-limits-toggle-text" text="Off" class="profile-settings-modal__toggle-text"/>
+                        <ui:VisualElement class="profile-settings-modal__toggle-knob"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="profile-settings-modal__section">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Play time windows" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Set windows when play time is allowed" class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="play-time-windows-toggle" class="profile-settings-modal__toggle">
+                        <ui:Label name="play-time-windows-toggle-text" text="Off" class="profile-settings-modal__toggle-text"/>
+                        <ui:VisualElement class="profile-settings-modal__toggle-knob"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="profile-settings-modal__section">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Allow purchases" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Allow this profile to buy new games and content" class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="allow-purchases-toggle" class="profile-settings-modal__toggle">
+                        <ui:Label name="allow-purchases-toggle-text" text="Off" class="profile-settings-modal__toggle-text"/>
+                        <ui:VisualElement class="profile-settings-modal__toggle-knob"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="profile-settings-modal__section profile-settings-modal__section--danger">
+                    <ui:VisualElement class="profile-settings-modal__copy">
+                        <ui:Label text="Delete profile" class="profile-settings-modal__section-title"/>
+                        <ui:Label text="Delete this profile and all game history. This cannot be undone." class="profile-settings-modal__section-subtitle"/>
+                    </ui:VisualElement>
+                    <ui:Button name="delete-profile-button" text="Delete" class="board-os__button profile-settings-modal__action-button profile-settings-modal__action-button--danger"/>
+                </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

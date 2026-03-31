@@ -1,0 +1,21 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/ReplacePlayer/ReplacePlayerModal.uss?fileID=7433441132597879392&amp;guid=2899bc6f56f9463d8c1b80e8c045432d&amp;type=3#ReplacePlayerModal"/>
+    <ui:VisualElement class="replace-player-modal-root">
+        <ui:VisualElement name="dismiss-replace-player" class="replace-player-modal-root__backdrop"/>
+        <ui:VisualElement class="replace-player-modal">
+            <ui:VisualElement class="replace-player-modal__header">
+                <ui:VisualElement name="close-replace-player" class="board-os__button replace-player-modal__back-button"/>
+                <ui:Label text="Replace Player" class="replace-player-modal__title"/>
+                <ui:VisualElement class="replace-player-modal__header-spacer"/>
+                <ui:Button name="remove-player" text="Remove player" class="replace-player-modal__remove-button"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="replace-player-modal__current-player-panel">
+                <ui:VisualElement name="replace-player-current-avatar" class="replace-player-modal__current-player-avatar"/>
+                <ui:Label name="replace-player-current-display-name" text="" class="replace-player-modal__current-player-display-name"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="replace-player-modal__divider"/>
+            <ui:Label text="Change player" class="replace-player-modal__section-title"/>
+            <ui:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" class="replace-player-modal__cards"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
