@@ -1,0 +1,80 @@
+.add-player-card {
+    width: 265px;
+    min-height: 160px;
+    padding-top: 28px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+    padding-left: 18px;
+    background-color: rgb(245, 240, 214);
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    margin-left: 12px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    height: 224px;
+}
+
+.add-player-card__avatar {
+    width: 98px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    background-color: rgb(195, 220, 222);
+    background-position: center;
+    background-size: 60% 60%;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1;
+}
+
+.add-player-card__display-name {
+    width: 100%;
+    margin-top: 23px;
+    color: rgb(0, 0, 0);
+    font-size: 79px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    -unity-text-generator: advanced;
+    -unity-text-auto-size: best-fit 6px 26px;
+}
+
+.add-player-card__guest-plus {
+    display: none;
+    width: 98px;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-bottom-left-radius: 100%;
+    background-color: rgb(255, 252, 221);
+    color: rgb(0, 0, 0);
+    font-size: 90px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    aspect-ratio: 1;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-image: url("../../../Textures/add.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 1);
+    background-size: 50% 50%;
+}
+
+.add-player-card.--guest .add-player-card__avatar {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+}
+
+.add-player-card.--guest .add-player-card__guest-plus {
+    display: flex;
+}

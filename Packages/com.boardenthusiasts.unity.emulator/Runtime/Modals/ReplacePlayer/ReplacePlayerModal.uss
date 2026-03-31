@@ -1,0 +1,173 @@
+:root {
+    --color_replace-player-modal-background: rgb(224, 222, 195);
+    --color_replace-player-modal-surface: rgb(239, 236, 207);
+    --color_replace-player-modal-current-player-surface: rgb(244, 240, 214);
+    --color_replace-player-modal-text: rgb(0, 0, 0);
+    --color_replace-player-modal-backdrop: rgba(58, 53, 44, 0.22);
+    --color_replace-player-modal-remove-surface: rgb(255, 251, 229);
+}
+
+.replace-player-modal-root {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+
+.replace-player-modal-root.--open {
+    display: flex;
+}
+
+.replace-player-modal-root__backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color_replace-player-modal-backdrop);
+}
+
+.replace-player-modal {
+    width: 916px;
+    padding-top: 28px;
+    padding-right: 28px;
+    padding-bottom: 0;
+    padding-left: 28px;
+    background-color: var(--color_replace-player-modal-background);
+    border-top-left-radius: 53px;
+    border-top-right-radius: 53px;
+    border-bottom-right-radius: 53px;
+    border-bottom-left-radius: 53px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.replace-player-modal__header {
+    min-height: 79px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 26px;
+}
+
+.replace-player-modal__back-button {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../../../Textures/arrow-back.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-size: 68% 68%;
+    background-position: center;
+}
+
+.replace-player-modal__title {
+    margin-left: 9px;
+    color: var(--color_replace-player-modal-text);
+    font-size: 49px;
+    -unity-font-style: bold;
+}
+
+.replace-player-modal__header-spacer {
+    flex-grow: 1;
+}
+
+.replace-player-modal__remove-button {
+    min-width: 155px;
+    min-height: 46px;
+    padding-top: 0;
+    padding-right: 22px;
+    padding-bottom: 0;
+    padding-left: 22px;
+    background-color: var(--color_replace-player-modal-remove-surface);
+    color: var(--color_replace-player-modal-text);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    font-size: 22px;
+    -unity-font-style: bold;
+}
+
+.replace-player-modal__current-player-panel {
+    min-height: 132px;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 17px;
+    padding-right: 24px;
+    padding-bottom: 17px;
+    padding-left: 24px;
+    background-color: var(--color_replace-player-modal-current-player-surface);
+    border-top-left-radius: 34px;
+    border-top-right-radius: 34px;
+    border-bottom-right-radius: 34px;
+    border-bottom-left-radius: 34px;
+    margin-right: 12px;
+}
+
+.replace-player-modal__current-player-avatar {
+    width: 115px;
+    aspect-ratio: 1;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+    background-color: rgb(195, 220, 222);
+    background-position: center;
+    background-size: 60% 60%;
+    flex-shrink: 0;
+}
+
+.replace-player-modal__current-player-display-name {
+    flex-grow: 1;
+    margin-left: 19px;
+    color: var(--color_replace-player-modal-text);
+    font-size: 30px;
+    -unity-font-style: bold;
+}
+
+.replace-player-modal__divider {
+    height: 1px;
+    margin-top: 24px;
+    margin-right: 8px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.replace-player-modal__section-title {
+    margin-top: 27px;
+    color: var(--color_replace-player-modal-text);
+    font-size: 29px;
+    -unity-font-style: bold;
+}
+
+.replace-player-modal__cards {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-top: 20px;
+    width: 860px;
+    margin-left: -12px;
+}
+
+.replace-player-modal__cards .unity-scroll-view__content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    flex-grow: 1;
+}
+
+.replace-player-modal .add-player-card {
+    width: 263px;
+    height: 225px;
+}

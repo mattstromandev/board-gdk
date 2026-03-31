@@ -1,0 +1,53 @@
+.manage-profiles-profile-item {
+    flex-direction: row;
+    align-items: center;
+    min-height: 131px;
+    padding-top: 15px;
+    padding-right: 34px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    background-color: rgb(233, 231, 200);
+    justify-content: space-between;
+    border-top-left-radius: 29px;
+    border-top-right-radius: 29px;
+    border-bottom-right-radius: 29px;
+    border-bottom-left-radius: 29px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.manage-profiles-profile-item__avatar {
+    flex-shrink: 0;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    background-color: rgb(195, 220, 222);
+    background-position: center;
+    background-size: 78% 78%;
+    height: 100%;
+    aspect-ratio: 1;
+}
+
+.manage-profiles-profile-item__display-name {
+    flex-grow: 1;
+    margin-left: 18px;
+    color: rgb(0, 0, 0);
+    font-size: 28px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+}
+
+.manage-profiles-profile-item__chevron {
+    flex-shrink: 0;
+    background-image: url("../../../Textures/arrow-forward.svg");
+    background-size: 60% 60%;
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-color: rgb(243, 242, 210);
+    aspect-ratio: 1;
+    height: 55%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}

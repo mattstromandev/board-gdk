@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Screens/ProfileSwitcher/ProfileSwitcher.uss?fileID=7433441132597879392&amp;guid=afc2c3e1d86f2dc448e1c5bb6f064ddb&amp;type=3#ProfileSwitcher"/>
+    <ui:VisualElement class="profile-switcher --open">
+        <ui:VisualElement name="close-switch-profile" class="board-os__button"/>
+        <ui:Label text="Switch Profile" class="profile-switcher__title"/>
+        <ui:ScrollView mode="Horizontal" horizontal-scroller-visibility="Hidden" class="profile-switcher__profile-cards"/>
+        <ui:VisualElement name="manage-profiles" class="board-os__button">
+            <ui:VisualElement class="icon"/>
+            <ui:Label text="Manage Profiles&#x9;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

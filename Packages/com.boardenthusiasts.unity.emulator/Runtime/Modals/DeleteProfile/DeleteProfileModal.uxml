@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/DeleteProfile/DeleteProfileModal.uss?fileID=7433441132597879392&amp;guid=8fb679d4e0314d13b4f17d24fe985f3b&amp;type=3#DeleteProfileModal"/>
+    <ui:VisualElement class="delete-profile-modal-root">
+        <ui:VisualElement name="dismiss-delete-profile" class="delete-profile-modal-root__backdrop"/>
+        <ui:VisualElement class="delete-profile-modal">
+            <ui:Label name="delete-profile-title" text="Delete &quot;Profile&quot; profile?" class="delete-profile-modal__title"/>
+            <ui:Label name="delete-profile-body" text="All of Profile's game history will be deleted.&#10;This cannot be undone." class="delete-profile-modal__body"/>
+            <ui:Button name="delete-profile" class="board-os__button delete-profile-modal__delete-button">
+                <ui:Label name="delete-profile-label" text="Delete profile" class="delete-profile-modal__delete-label"/>
+                <ui:Label name="delete-profile-dots" text=". . ." class="delete-profile-modal__delete-dots"/>
+            </ui:Button>
+            <ui:Button name="cancel-delete-profile" text="Cancel" class="board-os__button delete-profile-modal__cancel-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/AddPlayer/AddPlayerCard.uss?fileID=7433441132597879392&amp;guid=1888f6ea0d25465ea0ec96b6ea08fa75&amp;type=3#AddPlayerCard"/>
+    <ui:VisualElement data-source-type="BE.Emulator.Modals.AddPlayer.AddPlayerCardViewModel, BE.Emulator" class="add-player-card">
+        <ui:VisualElement class="add-player-card__avatar">
+            <ui:VisualElement class="add-player-card__guest-plus" style="flex-grow: 1;"/>
+            <Bindings>
+                <ui:DataBinding property="style.backgroundColor" data-source-path="AvatarBackgroundColor" binding-mode="ToTarget"/>
+                <ui:DataBinding property="style.backgroundImage" data-source-path="AvatarImage" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:VisualElement>
+        <ui:Label text="Player" class="add-player-card__display-name">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="DisplayName" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:Label>
+    </ui:VisualElement>
+</ui:UXML>

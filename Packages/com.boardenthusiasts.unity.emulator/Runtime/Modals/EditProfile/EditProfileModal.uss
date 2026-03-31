@@ -1,0 +1,211 @@
+:root {
+    --color_edit-profile-modal-background: rgb(209, 205, 177);
+    --color_edit-profile-modal-card-background: rgb(238, 235, 210);
+    --color_edit-profile-modal-text: rgb(0, 0, 0);
+    --color_edit-profile-modal-muted: rgb(153, 151, 135);
+    --color_edit-profile-modal-invalid: rgb(202, 29, 49);
+    --color_edit-profile-modal-disabled: rgb(142, 141, 123);
+    --color_edit-profile-modal-backdrop: rgba(255, 253, 223, 0.08);
+}
+
+.edit-profile-modal-root {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+
+.edit-profile-modal-root.--open {
+    display: flex;
+}
+
+.edit-profile-modal-root__backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color_edit-profile-modal-backdrop);
+}
+
+.edit-profile-modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 916px;
+    background-color: var(--color_edit-profile-modal-background);
+    border-top-left-radius: 46px;
+    border-top-right-radius: 46px;
+    border-bottom-right-radius: 46px;
+    border-bottom-left-radius: 46px;
+    padding-top: 30px;
+    padding-right: 32px;
+    padding-bottom: 22px;
+    padding-left: 32px;
+    align-items: center;
+    color: var(--color_edit-profile-modal-text);
+    justify-content: space-between;
+}
+
+.edit-profile-modal__close-button {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    width: 64px;
+    height: 64px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgb(226, 224, 197);
+    background-image: url("../../../Textures/close.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-size: 48% 48%;
+    border-top-left-radius: 19px;
+    border-top-right-radius: 19px;
+    border-bottom-right-radius: 19px;
+    border-bottom-left-radius: 19px;
+}
+
+.edit-profile-modal__title {
+    margin-top: 6px;
+    color: var(--color_edit-profile-modal-text);
+    font-size: 29px;
+    -unity-font-style: bold;
+}
+
+.edit-profile-modal__avatar-block {
+    margin-top: 31px;
+    width: 160px;
+    align-items: center;
+}
+
+.edit-profile-modal__avatar {
+    width: 171px;
+    aspect-ratio: 1;
+    border-top-left-radius: 47px;
+    border-top-right-radius: 47px;
+    border-bottom-right-radius: 47px;
+    border-bottom-left-radius: 47px;
+    background-color: rgb(113, 31, 237);
+    background-size: 60% 60%;
+}
+
+.edit-profile-modal__shuffle-button {
+    width: 54px;
+    height: 54px;
+    margin-top: -24px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgb(255, 251, 224);
+    background-image: url("../../../Textures/refresh.svg");
+    background-size: 58% 58%;
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+}
+
+.edit-profile-modal__nickname-area {
+    width: 100%;
+    margin-top: 63px;
+    min-height: 118px;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile-modal__nickname-field {
+    width: 100%;
+    min-height: 118px;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--color_edit-profile-modal-text);
+    -unity-font-style: bold;
+    font-size: 78px;
+    -unity-text-align: middle-center;
+}
+
+.edit-profile-modal__nickname-field .unity-base-text-field__input {
+    color: var(--color_edit-profile-modal-text);
+    -unity-font-style: bold;
+    font-size: 78px;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.edit-profile-modal__nickname-placeholder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: var(--color_edit-profile-modal-muted);
+    font-size: 76px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile-modal__nickname-placeholder.--placeholder-hidden {
+    display: none;
+}
+
+.edit-profile-modal__nickname-help {
+    margin-top: 8px;
+    color: rgb(80, 78, 69);
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.edit-profile-modal__nickname-help.--invalid {
+    color: var(--color_edit-profile-modal-invalid);
+}
+
+.edit-profile-modal.--invalid .edit-profile-modal__nickname-field,
+.edit-profile-modal.--invalid .edit-profile-modal__nickname-field .unity-base-text-field__input {
+    color: var(--color_edit-profile-modal-invalid);
+}
+
+.edit-profile-modal__save-button {
+    width: 100%;
+    height: 74px;
+    margin-top: 73px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 23px;
+    border-top-right-radius: 23px;
+    border-bottom-right-radius: 23px;
+    border-bottom-left-radius: 23px;
+    background-color: var(--color_edit-profile-modal-disabled);
+    color: rgb(248, 244, 217);
+    font-size: 23px;
+}
+
+.edit-profile-modal__save-button.--enabled {
+    background-color: rgb(0, 0, 0);
+}
+
+.edit-profile-modal__keyboard {
+    width: 100%;
+    margin-top: 8px;
+    height: 295px;
+    background-image: url("../../../Textures/OnScreenKeyboard.png");
+}

@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Modals/AddPlayer/AddPlayerModal.uss?fileID=7433441132597879392&amp;guid=2e0db9af44fd4bd7a45e4aa5d598a3ab&amp;type=3#AddPlayerModal"/>
+    <ui:VisualElement class="add-player-modal-root">
+        <ui:VisualElement name="dismiss-add-player" class="add-player-modal-root__backdrop"/>
+        <ui:VisualElement class="add-player-modal">
+            <ui:VisualElement class="add-player-modal__header">
+                <ui:VisualElement name="close-add-player" class="board-os__button add-player-modal__back-button"/>
+                <ui:Label text="Add Player" class="add-player-modal__title"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="add-player-modal__divider"/>
+            <ui:Label text="Select Player" class="add-player-modal__section-title"/>
+            <ui:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" class="add-player-modal__cards"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,122 @@
+:root {
+    --color_delete-profile-modal-surface: rgba(247, 243, 216, 0.96);
+    --color_delete-profile-modal-backdrop: rgba(54, 48, 38, 0.26);
+    --color_delete-profile-modal-text: rgb(0, 0, 0);
+    --color_delete-profile-modal-danger: rgb(215, 39, 60);
+    --color_delete-profile-modal-cancel: rgb(232, 228, 201);
+    --color_delete-profile-modal-dots: rgb(243, 220, 220);
+}
+
+.delete-profile-modal-root {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-profile-modal-root.--open {
+    display: flex;
+}
+
+.delete-profile-modal-root__backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color_delete-profile-modal-backdrop);
+}
+
+.delete-profile-modal {
+    width: 410px;
+    min-height: 360px;
+    padding-top: 38px;
+    padding-right: 28px;
+    padding-bottom: 26px;
+    padding-left: 28px;
+    background-color: var(--color_delete-profile-modal-surface);
+    border-top-left-radius: 38px;
+    border-top-right-radius: 38px;
+    border-bottom-right-radius: 38px;
+    border-bottom-left-radius: 38px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.delete-profile-modal__title {
+    width: 100%;
+    color: var(--color_delete-profile-modal-text);
+    font-size: 27px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.delete-profile-modal__body {
+    width: 100%;
+    margin-top: 18px;
+    color: rgb(52, 51, 46);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.delete-profile-modal__delete-button,
+.delete-profile-modal__cancel-button {
+    width: 100%;
+    height: 52px;
+    margin-top: 24px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    color: var(--color_delete-profile-modal-text);
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.delete-profile-modal__delete-button {
+    background-color: var(--color_delete-profile-modal-danger);
+    margin-top: 34px;
+}
+
+.delete-profile-modal__cancel-button {
+    background-color: var(--color_delete-profile-modal-cancel);
+    color: rgb(0, 0, 0);
+}
+
+.delete-profile-modal__delete-label,
+.delete-profile-modal__delete-dots {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -unity-text-align: middle-center;
+    color: rgb(255, 247, 240);
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.delete-profile-modal__delete-dots {
+    display: none;
+    color: var(--color_delete-profile-modal-dots);
+    letter-spacing: 6px;
+}
+
+.delete-profile-modal-root.--deleting .delete-profile-modal__delete-label {
+    display: none;
+}
+
+.delete-profile-modal-root.--deleting .delete-profile-modal__delete-dots {
+    display: flex;
+}

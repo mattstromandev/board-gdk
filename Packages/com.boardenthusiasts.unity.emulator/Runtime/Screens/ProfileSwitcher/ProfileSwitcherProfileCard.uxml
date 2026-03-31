@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.boardenthusiasts.unity.emulator/Runtime/Screens/ProfileSwitcher/ProfileSwitcherProfileCard.uss?fileID=7433441132597879392&amp;guid=e0b2e7b0846a4b5f9b4d0b4a0c0c1a52&amp;type=3#ProfileSwitcherProfileCard"/>
+    <ui:VisualElement data-source-type="BE.Emulator.Screens.ProfileSwitcher.ProfileCardViewModel, BE.Emulator" class="profile-card --active">
+        <ui:VisualElement class="profile-card__avatar">
+            <ui:VisualElement class="profile-card__avatar__border"/>
+            <Bindings>
+                <ui:DataBinding property="style.backgroundColor" data-source-path="AvatarBackgroundColor" binding-mode="ToTarget"/>
+                <ui:DataBinding property="style.backgroundImage" data-source-path="AvatarImage" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:VisualElement>
+        <ui:Label text="username" class="profile-card__display-name">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="DisplayName" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:Label>
+    </ui:VisualElement>
+</ui:UXML>

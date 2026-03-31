@@ -1,0 +1,183 @@
+:root {
+    --padding_screen-top: 16px;
+    --padding_screen-bottom: 16px;
+    --padding_screen-left: 17px;
+    --padding_screen-right: 17px;
+}
+
+.board-os {
+    width: 1920px;
+    height: 1080px;
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.board-os__safe-space {
+    visibility: hidden;
+    background-color: rgb(72, 178, 50);
+}
+
+.board-os.--show-safe-space .board-os__safe-space {
+    visibility: visible;
+}
+
+.board-os__screen-frame {
+    flex-shrink: 0;
+    position: absolute;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: none;
+}
+
+.board-os__screen-frame#modals {
+    background-color: rgba(0, 0, 0, 0.59);
+}
+
+.board-os__modal-content-frame {
+    position: absolute;
+    top: var(--padding_screen-top);
+    right: var(--padding_screen-right);
+    bottom: var(--padding_screen-bottom);
+    left: var(--padding_screen-left);
+}
+
+.board-os__content-frame {
+    position: absolute;
+    font-size: 22px;
+    top: var(--padding_screen-top);
+    left: var(--padding_screen-left);
+    right: var(--padding_screen-right);
+    bottom: var(--padding_screen-bottom);
+    flex-shrink: 0;
+}
+
+.board-os__button {
+    border-top-left-radius: 27px;
+    border-top-right-radius: 27px;
+    border-bottom-right-radius: 27px;
+    border-bottom-left-radius: 27px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgba(255, 255, 255, 0.24);
+    border-right-color: rgba(255, 255, 255, 0.24);
+    border-top-color: rgba(255, 255, 255, 0.24);
+    border-bottom-color: rgba(255, 255, 255, 0.24);
+    color: rgb(255, 255, 255);
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    -unity-font-style: bold;
+}
+
+.board-os__button#switch-profile {
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    width: 297px;
+    margin-right: 17px;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 14px;
+    visibility: hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.board-os.--profile-switch-enabled .board-os__button#switch-profile {
+    visibility: visible;
+}
+
+.board-os__button#switch-profile #avatar {
+    flex-shrink: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: rgb(39, 95, 247);
+    width: 56px;
+    margin-right: 13px;
+    aspect-ratio: 1;
+    background-image: url("../Textures/user.svg");
+    background-size: 50% 50%;
+}
+
+.board-os__button#switch-profile #username {
+    color: rgb(255, 255, 226);
+}
+
+.board-os__button#open-settings {
+    flex-shrink: 0;
+    background-image: url("../Textures/open-settings.svg");
+    background-size: 30% 30%;
+    height: 80px;
+    aspect-ratio: 1;
+    position: absolute;
+    right: var(--padding_screen-right);
+    top: var(--padding_screen-top);
+    visibility: hidden;
+    background-color: rgba(137, 129, 130, 0.29);
+    border-left-color: rgb(143, 143, 143);
+    border-right-color: rgb(143, 143, 143);
+    border-top-color: rgb(143, 143, 143);
+    border-bottom-color: rgb(143, 143, 143);
+}
+
+.board-os.--settings-enabled .board-os__button#open-settings {
+    visibility: visible;
+}
+
+.board-os__header {
+    flex-shrink: 0;
+    flex-direction: row;
+    height: 80px;
+}
+
+.board-os__header .board-os__safe-space {
+    flex-grow: 1;
+}
+
+.board-os__header__settings-placeholder {
+    flex-shrink: 0;
+    margin-left: 17px;
+    width: 80px;
+}
+
+.board-os.--modal-open__quick-settings .board-os__button#open-settings {
+    display: none;
+}
+
+.board-os.--modal-open .board-os__screen-frame#modals {
+    display: flex;
+}
+
+.board-os.--switching-profile .board-os__screen-frame#profile-switcher {
+    display: flex;
+}
+
+.board-os.--screen-open .board-os__screen-frame#screens {
+    display: flex;
+}

@@ -1,0 +1,81 @@
+.profile-switcher {
+    background-color: rgb(255, 253, 223);
+    align-items: center;
+    padding-top: 155px;
+    padding-bottom: 136px;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+
+.profile-switcher.--open {
+    display: flex;
+}
+
+.profile-switcher__title {
+    font-size: 78px;
+    -unity-font-style: bold;
+}
+
+.profile-switcher__profile-cards {
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.profile-switcher__profile-cards .unity-scroll-view__content-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    flex-shrink: 0;
+}
+
+.profile-switcher .board-os__button#close-switch-profile {
+    position: absolute;
+    height: 80px;
+    aspect-ratio: 1;
+    left: 52px;
+    top: 52px;
+    background-image: url("../../../Textures/close.svg");
+    background-size: 68% 68%;
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+}
+
+.profile-switcher .board-os__button#manage-profiles {
+    color: rgb(0, 0, 0);
+    font-size: 27px;
+    flex-direction: row;
+    height: 69px;
+    flex-shrink: 0;
+    width: 335px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    align-items: center;
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    padding-left: 22px;
+    background-color: rgb(247, 241, 211);
+}
+
+.profile-switcher .board-os__button#manage-profiles .icon {
+    flex-shrink: 0;
+    align-self: stretch;
+    aspect-ratio: 1;
+    background-image: url("../../../Textures/pencil.svg");
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-size: 65% 65%;
+}
+
+.profile-switcher .board-os__button#manage-profiles .unity-label {
+    margin-left: 10px;
+    -unity-text-align: middle-left;
+}
